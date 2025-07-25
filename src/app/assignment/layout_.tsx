@@ -22,17 +22,6 @@ const SubmissionPage = ({ children }: { children: React.ReactNode }) => {
     setAssignments(mockAssignments);
   });
 
-  /* const handleGroupSelect = (e: unknown) => {
-    if (!(e instanceof Object) || !("key" in e) || typeof e.key !== 'number') {
-      router.push(`/assignment`);
-      setSelectedGroup(null);
-      return
-    } else {
-      router.push(`/assignment?group=${e.key}`);
-      setSelectedGroup(e.key);
-    }
-  }; */
-
   return (
     <Layout
       className="h-full rounded-lg overflow-hidden"
@@ -43,27 +32,11 @@ const SubmissionPage = ({ children }: { children: React.ReactNode }) => {
         collapsible
         collapsed={collapsed}
         trigger={null}
-        // onCollapse={setCollapsed}
-        // width={250}
-        // style={{
-        //   overflow: 'auto',
-        //   height: '100vh',
-        //   position: 'fixed',
-        //   left: 0,
-        //   top: 64, // Adjust based on Header height
-        //   zIndex: 1000,
-        //   backgroundColor: 'var(--ant-color-bg-container)',
-        //   borderRight: '1px solid rgba(255, 255, 255, 0.1)',
-        //   transition: 'all 0.2s',
-        //   transform: collapsed ? 'translateX(-100%)' : 'translateX(0%)', // Slide in/out
-        // }}
       >
         <Menu
           theme="dark"
           mode="inline"
-          // collapsed={collapsed} // Pass collapsed state to Menu
           selectedKeys={searchParams.get('group') ? [searchParams.get('group')?.toString() || ''] : ["all"]}
-          // onClick={handleGroupSelect}
           items={[
             { key: 'all', icon: <EyeOutlined />, label: "All Assignments", onClick: () =>  router.push(`/assignment`)},
             ...assignments.map((group) => ({

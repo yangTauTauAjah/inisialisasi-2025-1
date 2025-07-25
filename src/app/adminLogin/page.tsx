@@ -21,11 +21,6 @@ export default function AdminLogin() {
       content: "Logging you in, please wait...",
     });
     try {
-      /* const form = new FormData()
-      for (const key in values) {
-        form.append(key, values[key]);
-      }
-      login(form); */
       const response = await fetch("/api/auth/admin-login", {
         method: "POST",
         headers: {
@@ -45,7 +40,6 @@ export default function AdminLogin() {
             "Login successful. You will be redirected in a moment, please wait",
           duration: 2,
         });
-        // message.success(data.message || "Login successful!");
         router.push("/"); // Redirect to home or dashboard
       } else {
         message.open({
@@ -54,9 +48,6 @@ export default function AdminLogin() {
           content: data.error || "Login failed. Please check your credentials.",
           duration: 2,
         });
-        /* message.error(
-          data.error || "Login failed. Please check your credentials."
-        ); */
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -66,7 +57,6 @@ export default function AdminLogin() {
         content: "An unexpected error occurred during login.",
         duration: 2,
       });
-      // message.error("An unexpected error occurred during login.");
     }
   };
 
@@ -86,7 +76,6 @@ export default function AdminLogin() {
           onFinish={onFinish}
           layout="vertical"
         >
-          {/* {contextHolder} */}
           <Form.Item
             label="NIM"
             name="nim"

@@ -1,6 +1,4 @@
-// import Image from "next/image";
 import React from "react";
-// import { Assignment, AssignmentGroup } from "@/app/lib/mockData";
 import { SubmissionPage } from "./Component";
 import { createClient } from "@/app/lib/supabase/client";
 import {
@@ -72,10 +70,6 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
         .eq("sub_task_id", Number(id));
       if (!error && submissions.length > 0)
         submittedAssignments.push(...submissions);
-      /* submissions.forEach(async (submission) => {
-          submittedAssignments.push(submission);
-          if (submission.path) console.log(submission.name, submission.path, (await supabase.storage.from("submissions").createSignedUrl(submission.path, 60)).data);
-        }); */
     }
   } catch (err) {
     console.error("An error occured: ", err);

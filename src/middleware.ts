@@ -14,17 +14,15 @@ const protectedRoutes = [
 const loginPageRoutes = ["/auth", "/adminLogin"];
 
 function isRouteProtected(request: NextRequest) {
-  return protectedRoutes.some(
-    (e) => {
-      if (!e.method.includes(request.method.toLowerCase())) return false
-      const path = request.nextUrl.pathname.slice(1).split('/')
-      const ref = e.route.slice(1).split('/')
-      for (let i = 0; i < ref.length; i++) {
-        if (path[i] !== ref[i]) return false
-      }
-      return true
+  return protectedRoutes.some((e) => {
+    if (!e.method.includes(request.method.toLowerCase())) return false;
+    const path = request.nextUrl.pathname.slice(1).split("/");
+    const ref = e.route.slice(1).split("/");
+    for (let i = 0; i < ref.length; i++) {
+      if (path[i] !== ref[i]) return false;
     }
-  );
+    return true;
+  });
 }
 
 function isRouteInLoginPage(request: NextRequest) {
@@ -47,23 +45,7 @@ export async function middleware(request: NextRequest) {
     nextResponse.cookies.set("session-token", "", { expires: 1 });
   }
 
-  if (
-    isRouteProtected(request)
-    // request.nextUrl.pathname.startsWith("/adminLogin") ||
-    // request.nextUrl.pathname.startsWith("/auth") ||
-    // request.nextUrl.pathname.startsWith("/admin") ||
-    // (request.nextUrl.pathname.startsWith("/api/data/assignments") &&
-    //   request.method.toLowerCase() === "post") ||
-    // (request.nextUrl.pathname.startsWith("/api/data/assignments") &&
-    //   request.method.toLowerCase() === "put") ||
-    // (request.nextUrl.pathname.startsWith("/api/data/assignments") &&
-    //   request.method.toLowerCase() === "delete") ||
-    // (request.nextUrl.pathname.startsWith("/api/data/assignmentGroups") &&
-    //   request.method.toLowerCase() === "post") ||
-    // (request.nextUrl.pathname.startsWith("/api/data/assignmentGroups") &&
-    //   request.method.toLowerCase() === "delete")
-  ) {
-    console.log('test==========================')
+  if (isRouteProtected(request)) {
     if (
       parsedCookies &&
       typeof parsedCookies.nim === "string" &&

@@ -129,7 +129,6 @@ const SubmissionsData = () => {
 
         setLoading(false);
       });
-    // setSubmissions(mockSubmissions);
   }, [setSubmissions]);
 
   const columns: (Record<string, string | ((...args: never[]) => unknown)> & {
@@ -145,21 +144,10 @@ const SubmissionsData = () => {
       dataIndex: "name",
       key: "name",
     },
-    /* {
-      title: "Path",
-      dataIndex: "path",
-      key: "path",
-    },
-    {
-      title: "Link",
-      dataIndex: "link",
-      key: "link",
-    }, */
     {
       title: "Assignment",
       dataIndex: "sub_task_id",
       key: "sub_task_id",
-      // onCell: (id: number) => <AsyncDataCell asyncFunction={getAssignmentName} args={[id]} />,
       render: (id: number) => (
         <AsyncDataCell asyncFunction={getAssignmentName} args={[id]} />
       ),
@@ -168,7 +156,6 @@ const SubmissionsData = () => {
       title: "Student",
       dataIndex: "user_id",
       key: "user_id",
-      // onCell: (id: number) => <AsyncDataCell asyncFunction={getStudentName} args={[id]} />,
       render: (id: number) => (
         <AsyncDataCell asyncFunction={getStudentName} args={[id]} />
       ),
@@ -198,7 +185,6 @@ const SubmissionsData = () => {
           </Tooltip>
         ) : (
           <a
-            // href={text}
             onClick={async (e) => {
               e.preventDefault();
               if (!record.path) return;
@@ -225,20 +211,6 @@ const SubmissionsData = () => {
       render: (date) =>
         new Date(date).toLocaleDateString("en", { dateStyle: "full" }),
     },
-    /* {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (
-        <Tag color={text === "Graded" ? "green" : "volcano"}>{text}</Tag>
-      ),
-    },
-    {
-      title: "Grade",
-      dataIndex: "grade",
-      key: "grade",
-      render: (text) => text || "-",
-    }, */
   ];
 
   return (

@@ -14,15 +14,6 @@ import { Assignment, AssignmentGroup } from "../lib/mockData";
 const { Title, Text } = Typography;
 const { Header, Content, Sider } = Layout;
 
-/* export interface Assignment {
-  id: number;
-  name: string;
-  description: string;
-  dueDate: string;
-  group: number;
-  submitted: boolean;
-} */
-
 // Assignment Detail & Submission Form Component
 export const SubmissionPage = ({
   assignmentsData,
@@ -32,32 +23,25 @@ export const SubmissionPage = ({
   assignmentGroupsData: AssignmentGroup[];
 }) => {
   const router = useRouter();
-  const [selectedGroup, setSelectedGroup] = useState<number | null>(null); // null means "all assignments"
-  // const [assignments , setAssignments] = useState(mockAssignments); // Use state to allow submission status update
-  // const [groups , setAssignments] = useState(mockAssignmentGroups); // Use state to allow submission status update
-  const [filteredAssignments, setFilteredAssignments] = useState<
-    Assignment[]
-  >([]);
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const [filteredAssignments, setFilteredAssignments] = useState<Assignment[]>(
+    []
+  );
   const [collapsed, setCollapsed] = useState(true); // Start collapsed
 
   const handleAssignmentClick = (assignmentId: number) => {
     router.push(`/assignment/${assignmentId}`);
-    // setSelectedAssignment(assignment);
-    // setCollapsed(true); // Collapse sidebar after selection
   };
 
   useEffect(() => {
     const _ =
       typeof selectedGroup === "number"
-        ? assignmentsData.filter((assign) => assign.task_group_id === selectedGroup)
+        ? assignmentsData.filter(
+            (assign) => assign.task_group_id === selectedGroup
+          )
         : assignmentsData;
     setFilteredAssignments(_);
   }, [assignmentsData, selectedGroup]);
-
-  /* useEffect(() => {
-    if (!Number.isNaN(group)) setSelectedGroup(group);
-    else setSelectedGroup(null);
-  }, [seacrhParam]); */
 
   return (
     <Layout
@@ -65,35 +49,15 @@ export const SubmissionPage = ({
       style={{ backgroundColor: "var(--ant-color-bg-layout)" }}
     >
       {/* Sider for Assignment Groups */}
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        trigger={null}
-        // onCollapse={setCollapsed}
-        // width={250}
-        // style={{
-        //   overflow: 'auto',
-        //   height: '100vh',
-        //   position: 'fixed',
-        //   left: 0,
-        //   top: 64, // Adjust based on Header height
-        //   zIndex: 1000,
-        //   backgroundColor: 'var(--ant-color-bg-container)',
-        //   borderRight: '1px solid rgba(255, 255, 255, 0.1)',
-        //   transition: 'all 0.2s',
-        //   transform: collapsed ? 'translateX(-100%)' : 'translateX(0%)', // Slide in/out
-        // }}
-      >
+      <Sider collapsible collapsed={collapsed} trigger={null}>
         <Menu
           theme="dark"
           mode="inline"
-          // collapsed={collapsed} // Pass collapsed state to Menu
           selectedKeys={
             typeof selectedGroup === "number"
               ? [selectedGroup.toString()]
               : ["all"]
           }
-          // onClick={handleGroupSelect}
           items={[
             {
               key: "all",
@@ -127,7 +91,8 @@ export const SubmissionPage = ({
             <Title level={3} className="text-white mb-6">
               {typeof selectedGroup === "number"
                 ? `Assignments in: ${
-                    assignmentGroupsData.find((e) => e.id === selectedGroup)?.name
+                    assignmentGroupsData.find((e) => e.id === selectedGroup)
+                      ?.name
                   }`
                 : "All Assignments"}
             </Title>
@@ -153,7 +118,7 @@ export const SubmissionPage = ({
                     >
                       View Details
                     </Button>,
-                    (new Date(assign.due).getTime() > Date.now()) ? (
+                    new Date(assign.due).getTime() > Date.now() ? (
                       <Tag color="green">Assigned</Tag>
                     ) : (
                       <Tag color="orange">Overdue</Tag>
@@ -170,11 +135,17 @@ export const SubmissionPage = ({
                         <Text className="block text-gray-400 text-sm mt-1">
                           Due: {dayjs(assign.due).format("MMMM D, YYYY")}
                         </Text>
-                        <Tag color="blue" style={{marginTop: '1rem'}}>
-                          {assignmentGroupsData.find((e) => assign.task_group_id === e.id)?.name}
+                        <Tag color="blue" style={{ marginTop: "1rem" }}>
+                          {
+                            assignmentGroupsData.find(
+                              (e) => assign.task_group_id === e.id
+                            )?.name
+                          }
                         </Tag>
                         <Tag color={assign.is_link ? "purple" : "geekblue"}>
-                          {assign.is_link ? "Link Submission" : "File Submission"}
+                          {assign.is_link
+                            ? "Link Submission"
+                            : "File Submission"}
                         </Tag>
                       </div>
                     }

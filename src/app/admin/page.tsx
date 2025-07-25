@@ -1,52 +1,49 @@
-'use client'
-// import Image from "next/image";
+"use client";
 import React, { useEffect, useState } from "react";
 import { Typography, Card, Statistic } from "antd";
-// import { mockAssignments, mockStudents, mockSubmissions } from "@/app/lib/mockData";
 import { createClient } from "../lib/supabase/client";
 
 const { Title, Text } = Typography;
 
 const AdminDashboard = () => {
-  // const [isLoading, setIsLoading] = useState(true)
   const [numStudent, setNumStudent] = useState(0);
   const [numAssignment, setNumAssignment] = useState(0);
   const [numSubmission, setNumSubmission] = useState(0);
   useEffect(() => {
-    const supabase = createClient()
+    const supabase = createClient();
     supabase
-      .from('users')
-      .select('id')
-      .order('id', { ascending: false }) // Order by id descending to easily get the max
-      .limit(1).then(res => {
-      if (res.data && res.data.length > 0) {
-        setNumStudent(res.data[0]['id']);
-      }
-    })
+      .from("users")
+      .select("id")
+      .order("id", { ascending: false }) // Order by id descending to easily get the max
+      .limit(1)
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setNumStudent(res.data[0]["id"]);
+        }
+      });
 
     supabase
-      .from('sub-tasks')
-      .select('id')
-      .order('id', { ascending: false }) // Order by id descending to easily get the max
-      .limit(1).then(res => {
-      if (res.data && res.data.length > 0) {
-        setNumAssignment(res.data[0]['id']);
-      }
-    })
+      .from("sub-tasks")
+      .select("id")
+      .order("id", { ascending: false }) // Order by id descending to easily get the max
+      .limit(1)
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setNumAssignment(res.data[0]["id"]);
+        }
+      });
 
     supabase
-      .from('file_managers')
-      .select('id')
-      .order('id', { ascending: false }) // Order by id descending to easily get the max
-      .limit(1).then(res => {
-      if (res.data && res.data.length > 0) {
-        setNumSubmission(res.data[0]['id']);
-      }
-    })
-    // setNumStudent(mockStudents.length);
-    // setNumAssignment(mockAssignments.length);
-    // setNumSubmission(mockSubmissions.length);
-  }, [setNumStudent, setNumAssignment, setNumSubmission]); 
+      .from("file_managers")
+      .select("id")
+      .order("id", { ascending: false }) // Order by id descending to easily get the max
+      .limit(1)
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setNumSubmission(res.data[0]["id"]);
+        }
+      });
+  }, [setNumStudent, setNumAssignment, setNumSubmission]);
   return (
     <div className="p-8 text-center">
       <Title level={3} className="text-white">

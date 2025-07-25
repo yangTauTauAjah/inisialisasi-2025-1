@@ -22,17 +22,14 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import {
-  Assignment,
-  AssignmentGroup
-} from "@/app/lib/mockData";
+import { Assignment, AssignmentGroup } from "@/app/lib/mockData";
 import { createClient } from "@/app/lib/supabase/client";
 import {
   AssignmentGroupsTableName,
   AssignmentsTableName,
 } from "@/app/lib/supabase/tableAlias";
 import { ColumnsType } from "antd/es/table";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -92,24 +89,21 @@ const AssignmentsData = () => {
       dataIndex: "task_group_id",
       key: "task_group_id",
       render: (id: number, value) => <Tag color="blue">{value.group}</Tag>,
-      /* render: (id: number) => <Tag color="blue">{assigntmentGroups.find(e => {
-        console.log(e.name)
-        return e.id === id
-      })?.name}</Tag>, */
     },
     {
       title: "Submission Type",
       dataIndex: "is_link",
       key: "is_link",
       render(value) {
-        return value ? 'Link Submission' : 'File Submission'
+        return value ? "Link Submission" : "File Submission";
       },
     },
     {
       title: "Due Date",
       dataIndex: "due",
       key: "due",
-      render: (text) => new Date(text).toLocaleString('en', {dateStyle: 'full'}),
+      render: (text) =>
+        new Date(text).toLocaleString("en", { dateStyle: "full" }),
     },
     {
       title: "Action",
@@ -169,7 +163,7 @@ const AssignmentsData = () => {
 
   const handleEdit = (assignment: Assignment) => {
     setEditingAssignment(assignment);
-    form.setFieldsValue({...assignment, due: dayjs(assignment.due)});
+    form.setFieldsValue({ ...assignment, due: dayjs(assignment.due) });
     setIsModalVisible(true);
   };
 
@@ -179,8 +173,10 @@ const AssignmentsData = () => {
       content: "Are you sure you want to delete this assignment?",
       onOk: async () => {
         try {
-          const res = await fetch(`/api/data/assignments/${id}`, { method: "DELETE" });
-          const data = await res.json()
+          const res = await fetch(`/api/data/assignments/${id}`, {
+            method: "DELETE",
+          });
+          const data = await res.json();
 
           if (res.ok) {
             setAssignments(assignments.filter((a) => a.id !== id));
@@ -314,7 +310,7 @@ const AssignmentsData = () => {
           const response = await fetch(`/api/data/assignmentGroups/${id}`, {
             method: "DELETE",
           });
-          
+
           const data = await response.json();
           if (response.ok) {
             message.success(
@@ -341,33 +337,34 @@ const AssignmentsData = () => {
     form
       .validateFields()
       .then(async (values) => {
-        /* const newAssignment = {
-          ...values,
-          due: values.dueDate.format("YYYY-MM-DD"),
-          id: editingAssignment
-            ? editingAssignment.id
-            : `a${assignments.length + 1}`,
-          submitted: editingAssignment ? editingAssignment.active : false,
-        }; */
-
         if (editingAssignment) {
           try {
-            // console.log(values)
-            // return
-            const request = await fetch(`/api/data/assignments/${editingAssignment.id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(values),
-            });
+            const request = await fetch(
+              `/api/data/assignments/${editingAssignment.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+              }
+            );
 
-            const res = await request.json()
+            const res = await request.json();
 
             if (request.ok) {
               setAssignments(
                 assignments.map((a) =>
-                  a.id === editingAssignment.id ? {id: editingAssignment.id, ...values, group: assignmentGroups.find(e => e.id === values.task_group_id)?.name || 'Unknown group'} : a
+                  a.id === editingAssignment.id
+                    ? {
+                        id: editingAssignment.id,
+                        ...values,
+                        group:
+                          assignmentGroups.find(
+                            (e) => e.id === values.task_group_id
+                          )?.name || "Unknown group",
+                      }
+                    : a
                 )
               );
               modal.success({
@@ -375,7 +372,10 @@ const AssignmentsData = () => {
                 content: "Assignment updated successfully.",
               });
             } else {
-              console.error("Error while updating assignment data: ", res.error)
+              console.error(
+                "Error while updating assignment data: ",
+                res.error
+              );
               modal.error({
                 title: "Error",
                 content: res.error || "Error while updating assignment data.",
@@ -390,7 +390,6 @@ const AssignmentsData = () => {
           }
         } else {
           try {
-            
             const request = await fetch(`/api/data/assignments`, {
               method: "POST",
               headers: {
@@ -399,10 +398,18 @@ const AssignmentsData = () => {
               body: JSON.stringify(values),
             });
 
-            const res = await request.json()
+            const res = await request.json();
 
             if (request.ok) {
-              setAssignments([...assignments, {...values, group: assignmentGroups.find(e => e.id === values.sub_task_id)}]);
+              setAssignments([
+                ...assignments,
+                {
+                  ...values,
+                  group: assignmentGroups.find(
+                    (e) => e.id === values.sub_task_id
+                  ),
+                },
+              ]);
               modal.success({
                 title: "Success",
                 content: "Assignment added successfully.",
@@ -410,7 +417,7 @@ const AssignmentsData = () => {
             } else {
               modal.error({
                 title: "Error",
-                content: res.error || "Failed to add new assignment."
+                content: res.error || "Failed to add new assignment.",
               });
             }
           } catch (err) {
@@ -454,7 +461,7 @@ const AssignmentsData = () => {
         bordered
         size="small"
         loading={loadingGroups}
-        dataSource={assignmentGroups.sort((a,b) => a.id - b.id)}
+        dataSource={assignmentGroups.sort((a, b) => a.id - b.id)}
         columns={assignmentGroupsColumns}
         rowKey="id"
         className="rounded-lg overflow-hidden mb-8"
@@ -473,17 +480,15 @@ const AssignmentsData = () => {
       <Table
         bordered
         loading={loading}
-        dataSource={assignments.sort((a,b) => a.id - b.id)}
+        dataSource={assignments.sort((a, b) => a.id - b.id)}
         columns={columns}
         rowKey="id"
         className="rounded-lg overflow-hidden"
-        // pagination={{ pageSize: 5 }}
         style={{ backgroundColor: "var(--ant-color-bg-container)" }}
       />
 
       <Modal
         title={editingAssignment ? "Edit Assignment" : "Add New Assignment"}
-        // visible={isModalVisible}
         open={isModalVisible}
         onOk={handleModalOk}
         onCancel={() => setIsModalVisible(false)}
@@ -520,18 +525,7 @@ const AssignmentsData = () => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            name="due"
-            label="Due Date"
-            /* rules={[
-              {
-                required: true,
-                type: "date",
-                message: "Please select a due date!",
-              },
-            ]} */
-          >
-            {/* <Input /> */}
+          <Form.Item name="due" label="Due Date">
             <DatePicker value={new Date()} className="w-full" />
           </Form.Item>
           <Form.Item

@@ -41,27 +41,6 @@ export default function LayoutComponent({
     } else setCurrentPage("landing");
   }, [pathName]);
 
-  // useEffect(() => {
-  //   const updateContentHeight = () => {
-  //     const headerHeight =
-  //       document.querySelector(".ant-layout-header")?.offsetHeight || 0;
-  //     const footerHeight =
-  //       document.querySelector(".ant-layout-footer")?.offsetHeight || 0;
-  //     const contentElement = document.querySelector(".ant-layout-content");
-  //     if (contentElement) {
-  //       contentElement.style.minHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
-  //     }
-  //     const siteLayoutContent = document.querySelector(".site-layout-content");
-  //     if (siteLayoutContent) {
-  //       siteLayoutContent.style.minHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px - 48px)`;
-  //     }
-  //   };
-
-  //   updateContentHeight();
-  //   window.addEventListener("resize", updateContentHeight);
-  //   return () => window.removeEventListener("resize", updateContentHeight);
-  // }, []);
-
   return (
     <ConfigProvider
       theme={{
@@ -154,7 +133,6 @@ export default function LayoutComponent({
               theme="dark"
               mode="horizontal"
               selectedKeys={[currentPage]}
-              // onClick={handleMenuClick}
               className="flex-grow justify-end"
               items={[
                 {
@@ -169,12 +147,6 @@ export default function LayoutComponent({
                   label: "Submit",
                   onClick: () => router.push("/assignment"),
                 },
-                /* {
-                    key: "admin",
-                    icon: <SettingOutlined />,
-                    label: "Admin",
-                    onClick: () => router.push("/admin"),
-                  }, */
                 {
                   key: studentId ? "logout" : "login",
                   icon: studentId ? <LogoutOutlined /> : <LoginOutlined />,
@@ -186,7 +158,6 @@ export default function LayoutComponent({
                           method: "delete",
                         });
                         if (res.ok) {
-                          // router.push("/");
                           message.success("Logout success.");
                         } else {
                           console.error("Logout failed: ", res);
@@ -203,7 +174,7 @@ export default function LayoutComponent({
               style={{ minWidth: 0, flex: "auto" }}
             />
           </Header>
-          <Content /* style={{ padding: '0 50px' }} */>
+          <Content>
             <div
               className="site-layout-content"
               style={{
@@ -211,7 +182,6 @@ export default function LayoutComponent({
                 padding: 24,
                 minHeight: "calc(100vh - 112px)",
                 borderRadius: "8px",
-                // marginTop: "24px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent:

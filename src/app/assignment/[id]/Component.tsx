@@ -214,80 +214,16 @@ export const SubmissionPage = ({
                 </Text>
                 <Text className="block mb-1 text-sm">
                   Submitted On:{" "}
-                  <Tag color="green" >{new Date(submission.created_at).toLocaleDateString('en', {dateStyle: 'full', })}</Tag>
+                  <Tag color="green">
+                    {new Date(submission.created_at).toLocaleDateString("en", {
+                      dateStyle: "full",
+                    })}
+                  </Tag>
                 </Text>
               </div>
             ),
           }))}
         />
-        // <List
-        //   itemLayout="horizontal"
-        //   dataSource={submittedAssignments}
-        //   renderItem={(submission: Submission) => (
-        //     <List.Item
-        //       className="rounded-lg mb-2 p-4"
-        //       style={{
-        //         backgroundColor: "var(--ant-color-bg-container-light)",
-        //       }}
-        //     >
-        //       <List.Item.Meta
-        //         title={<Text className="text-white">{submission.name}</Text>}
-        //         description={
-        //           <div className="text-gray-400">
-        //             <Text className="block text-gray-400">
-        //               Type:{" "}
-        //               <Tag color={submission.path ? "geekblue" : "purple"}>
-        //                 {(submission.path ? "file" : "link").toUpperCase()}
-        //               </Tag>
-        //             </Text>
-        //             <Text className="block text-gray-400">
-        //               Content:{" "}
-        //               {submission.link ? (
-        //                 <a
-        //                   href={submission.link}
-        //                   target="_blank"
-        //                   rel="noopener noreferrer"
-        //                   className="text-blue-400 hover:text-blue-300"
-        //                 >
-        //                   <LinkOutlined /> View Link
-        //                 </a>
-        //               ) : (
-        //                 <a
-        //                   onClick={async (e) => {
-        //                     e.preventDefault();
-        //                     if (!submission.path) return;
-        //                     const to = (
-        //                       await createClient()
-        //                         .storage.from("submissions")
-        //                         .createSignedUrl(submission.path, 60, {
-        //                           download: true,
-        //                         })
-        //                     ).data?.signedUrl;
-        //                     if (to) router.push(to);
-        //                   }}
-        //                   href={submission.path}
-        //                   target="_blank"
-        //                   rel="noopener noreferrer"
-        //                   className="text-blue-400 hover:text-blue-300"
-        //                 >
-        //                   <PaperClipOutlined /> {submission.path}{" "}
-        //                 </a>
-        //               )}
-        //             </Text>
-        //             <Text className="block text-gray-400 text-sm mt-1">
-        //               Submitted On:{" "}
-        //               <Tag color="blue">
-        //                 {dayjs(submission.created_at).format(
-        //                   "MMMM D, YYYY HH:mm"
-        //                 )}
-        //               </Tag>
-        //             </Text>
-        //           </div>
-        //         }
-        //       />
-        //     </List.Item>
-        //   )}
-        // />
       )}
       <Form
         form={form}
@@ -418,10 +354,7 @@ export const SubmissionPage = ({
       title="404"
       subTitle="Assignment Not Found."
       extra={
-        <Button
-          onClick={() => router.push("/assignment")}
-          type="primary"
-        >
+        <Button onClick={() => router.push("/assignment")} type="primary">
           Back to menu
         </Button>
       }
