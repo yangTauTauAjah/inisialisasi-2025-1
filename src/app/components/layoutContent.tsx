@@ -41,6 +41,11 @@ export default function LayoutComponent({
     } else setCurrentPage("landing");
   }, [pathName]);
 
+  // If it's the landing page, render without Ant Design layout
+  if (currentPage === "landing") {
+    return <>{children}</>;
+  }
+
   return (
     <ConfigProvider
       theme={{

@@ -1,27 +1,167 @@
 @import "tailwindcss";
 
+/* Sacco Font Family - For Titles and Hero Text Only */
+@font-face {
+  font-family: 'Sacco';
+  src: url('/sacco/web/Sacco-SemiBoldCondensed.woff2') format('woff2'),
+       url('/sacco/web/Sacco-SemiBoldCondensed.woff') format('woff'),
+       url('/sacco/web/Sacco-SemiBoldCondensed.eot') format('embedded-opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sacco';
+  src: url('/sacco/web/Sacco-SemBdCondObliq.woff2') format('woff2'),
+       url('/sacco/web/Sacco-SemBdCondObliq.woff') format('woff'),
+       url('/sacco/web/Sacco-SemBdCondObliq.eot') format('embedded-opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sacco';
+  src: url('/sacco/web/Sacco-SemiBoldUltraCondensed.woff2') format('woff2'),
+       url('/sacco/web/Sacco-SemiBoldUltraCondensed.woff') format('woff'),
+       url('/sacco/web/Sacco-SemiBoldUltraCondensed.eot') format('embedded-opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Design System Colors */
+  --primary-bg: #0A1428;
+  --secondary-bg: #1A2332;
+  --primary-text: #FFFFFF;
+  --accent-text: #4FC3F7;
+  --interactive: #4FC3F7;
+  --grid-pattern: rgba(79, 195, 247, 0.1);
+  
+  /* Typography */
+  --font-sacco: 'Sacco', sans-serif;
+  --font-ubuntu: 'Ubuntu', sans-serif;
+  --letter-spacing-heading: 0.15em;
+  --letter-spacing-nav: 0.1em;
+  
+  /* Spacing */
+  --section-padding: 4rem 2rem;
+  --container-max-width: 1200px;
+  
+  /* Transitions */
+  --transition-smooth: all 0.3s ease;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-background: var(--primary-bg);
+  --color-foreground: var(--primary-text);
+  --font-sans: var(--font-ubuntu);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  min-width: 768px;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--primary-bg);
+  color: var(--primary-text);
+  font-family: var(--font-ubuntu), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Grid Pattern Background */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(79, 195, 247, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 195, 247, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center center;
+}
+
+/* 3D Perspective Grid for Hero */
+.hero-grid {
+  background-image: 
+    radial-gradient(circle at 50% 100%, rgba(79, 195, 247, 0.2) 0%, transparent 50%),
+    linear-gradient(rgba(79, 195, 247, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 195, 247, 0.1) 1px, transparent 1px);
+  background-size: 100% 100%, 50px 50px, 50px 50px;
+  background-position: center center, center center, center center;
+  transform: perspective(1000px) rotateX(60deg);
+  transform-origin: center bottom;
+}
+
+/* Utility Classes */
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.letter-spacing-heading {
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+.letter-spacing-nav {
+  letter-spacing: var(--letter-spacing-nav);
+}
+
+/* Font Classes */
+.font-sacco {
+  font-family: var(--font-sacco), sans-serif;
+}
+
+.font-ubuntu {
+  font-family: var(--font-ubuntu), sans-serif;
+}
+
+/* Glow Effects */
+.glow-text {
+  text-shadow: 0 0 10px var(--accent-text), 0 0 20px var(--accent-text);
+}
+
+.glow-border {
+  box-shadow: 
+    0 0 10px var(--accent-text),
+    0 0 20px var(--accent-text),
+    inset 0 0 10px rgba(79, 195, 247, 0.1);
+}
+
+/* Backdrop Blur */
+.backdrop-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 2rem 1rem;
+  }
+  
+  .hero-grid {
+    transform: none;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus States for Accessibility */
+button:focus,
+a:focus {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+/* Vertical Text for Outfit Section */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
 }
