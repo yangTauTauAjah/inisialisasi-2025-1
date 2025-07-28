@@ -8,7 +8,7 @@ import {
   LeftOutlined,
 } from "@ant-design/icons";
 import { useRouter, useSearchParams } from "next/navigation";
-import { mockAssignments } from "@/app/lib/mockData";
+import { mockAssignments } from "@/app/(app)/lib/mockData";
 
 const { Header, Content, Sider } = Layout;
 

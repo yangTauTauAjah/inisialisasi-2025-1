@@ -1,8 +1,10 @@
 import { Geist, Geist_Mono, Ubuntu } from "next/font/google";
 import "@ant-design/v5-patch-for-react-19";
-import LayoutComponent from "./components/layoutContent";
 import { Metadata } from "next";
+import "../globals.css";
+import Navigation from "../components/landing/Navigation";
 import { headers } from "next/headers";
+import Footer from "../components/landing/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,15 +33,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const header = await headers();
-  
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased`}
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 10%, #06142E 0%, #123AA9 57%, #182F56 100%)",
+        }}
+        className={`min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased`}
       >
-        <LayoutComponent studentId={header.get("x-student-id")}>
-          {children}
-        </LayoutComponent>
+        <Navigation studentId={header.get("x-student-id")} />
+        {children}
+        <Footer />
       </body>
     </html>
   );

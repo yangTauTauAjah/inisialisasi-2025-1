@@ -1,4 +1,4 @@
-import { AssignmentsTableName, createClient, SubmissionsTableName } from "@/app/lib/supabase/server";
+import { AssignmentsTableName, createClient, SubmissionsTableName } from "@/app/(app)/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 type Params = Promise<{ id: string }>;

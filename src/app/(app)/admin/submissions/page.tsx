@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Typography, Table, Spin, Tag, Tooltip } from "antd";
-import { createClient } from "@/app/lib/supabase/client";
+import { createClient } from "@/app/(app)/lib/supabase/client";
 import {
   AssignmentsTableName,
   StudentsTableName,
   SubmissionsTableName,
-} from "@/app/lib/supabase/tableAlias";
-import { Submission } from "@/app/lib/mockData";
+} from "@/app/(app)/lib/supabase/tableAlias";
+import { Submission } from "@/app/(app)/lib/mockData";
 import { useRouter } from "next/navigation";
 
 const { Title } = Typography;

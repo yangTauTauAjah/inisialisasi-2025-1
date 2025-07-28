@@ -1,4 +1,4 @@
-import { createClient, StudentsTableName } from '@/app/lib/supabase/server';
+import { createClient, StudentsTableName } from '@/app/(app)/lib/supabase/server';
 import { /* NextRequest,  */NextResponse } from 'next/server';
 
 // --- Supabase Configuration ---

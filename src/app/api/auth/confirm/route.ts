@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 // import { mockStudents } from '@/app/lib/mockData';
-import { createClient } from "@/app/lib/supabase/server";
+import { createClient } from "@/app/(app)/lib/supabase/server";
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {

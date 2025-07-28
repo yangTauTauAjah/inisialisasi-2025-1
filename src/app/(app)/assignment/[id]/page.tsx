@@ -1,17 +1,17 @@
 import React from "react";
 import { SubmissionPage } from "./Component";
-import { createClient } from "@/app/lib/supabase/client";
+import { createClient } from "@/app/(app)/lib/supabase/client";
 import {
   AssignmentGroupsTableName,
   AssignmentsTableName,
-} from "@/app/lib/supabase/tableAlias";
+} from "@/app/(app)/lib/supabase/tableAlias";
 import {
   Assignment,
   AssignmentGroup,
   StudentsTableName,
   Submission,
   SubmissionsTableName,
-} from "@/app/lib/supabase/server";
+} from "@/app/(app)/lib/supabase/server";
 import { headers } from "next/headers";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {

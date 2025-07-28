@@ -22,12 +22,12 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { Assignment, AssignmentGroup } from "@/app/lib/mockData";
-import { createClient } from "@/app/lib/supabase/client";
+import { Assignment, AssignmentGroup } from "@/app/(app)/lib/mockData";
+import { createClient } from "@/app/(app)/lib/supabase/client";
 import {
   AssignmentGroupsTableName,
   AssignmentsTableName,
-} from "@/app/lib/supabase/tableAlias";
+} from "@/app/(app)/lib/supabase/tableAlias";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 

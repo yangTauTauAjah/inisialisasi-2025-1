@@ -2,7 +2,7 @@ import {
   AssignmentGroup,
   AssignmentGroupsTableName,
   createClient,
-} from "@/app/lib/supabase/server";
+} from "@/app/(app)/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(/* request: NextRequest */) {

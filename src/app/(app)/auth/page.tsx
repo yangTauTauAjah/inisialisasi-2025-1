@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { Card, Typography, Tabs } from 'antd';
-import ConfirmationForm from '../components/auth/ConfirmationForm';
-import LoginForm from '../components/auth/LoginForm';
+import ConfirmationForm from '../../components/auth/ConfirmationForm';
+import LoginForm from '../../components/auth/LoginForm';
 
 const { Title } = Typography;
 

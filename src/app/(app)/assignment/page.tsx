@@ -2,7 +2,7 @@ import React from "react";
 import {
   Assignment,
   AssignmentGroup,
-} from "@/app/lib/mockData";
+} from "@/app/(app)/lib/mockData";
 import { SubmissionPage } from "./Component";
 import { createClient } from "../lib/supabase/server";
 

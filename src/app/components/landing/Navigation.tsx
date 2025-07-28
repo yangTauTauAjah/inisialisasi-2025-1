@@ -3,14 +3,30 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-const Navigation = () => {
+const Navigation = ({ studentId }: { studentId: string | null }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'HOME', href: '#home' },
     { name: 'TATA TERTIB', href: '#guidelines' },
-    { name: 'BERITA & PENGUMUMAN', href: '#news' }
+    { name: 'BERITA & PENGUMUMAN', href: '/announcement' },
+    { name: 'PENUGASAN', href: '/assignment' }
   ];
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        // Redirect to home page after logout
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-20 px-8 backdrop-blur">
@@ -32,13 +48,22 @@ const Navigation = () => {
             </Link>
           ))}
           
-          {/* Login Button */}
-          <Link
-            href="/auth"
-            className="bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-ubuntu"
-          >
-            LOG IN
-          </Link>
+          {/* Login/Logout Button */}
+          {studentId ? (
+            <button
+              onClick={handleLogout}
+              className="bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-ubuntu"
+            >
+              LOG OUT
+            </button>
+          ) : (
+            <Link
+              href="/auth"
+              className="bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-ubuntu"
+            >
+              LOG IN
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -60,22 +85,36 @@ const Navigation = () => {
         <div className="md:hidden absolute top-20 left-0 right-0 bg-secondary-bg backdrop-blur border-t border-accent-text/20">
           <div className="px-8 py-4 space-y-4">
             {navItems.map((item) => (
-                              <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-white font-medium text-sm text-uppercase letter-spacing-nav hover:text-accent-text transition-colors font-ubuntu"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
+              <Link
+                key={item.name}
+                href={item.href}
+                className="block text-white font-medium text-sm text-uppercase letter-spacing-nav hover:text-accent-text transition-colors font-ubuntu"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
             ))}
-                          <Link
+            
+            {/* Mobile Login/Logout Button */}
+            {studentId && studentId.length > 0 ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className="block w-full bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors text-center font-ubuntu"
+              >
+                LOG OUT
+              </button>
+            ) : (
+              <Link
                 href="/auth"
                 className="block bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors text-center font-ubuntu"
                 onClick={() => setIsMenuOpen(false)}
               >
                 LOG IN
               </Link>
+            )}
           </div>
         </div>
       )}

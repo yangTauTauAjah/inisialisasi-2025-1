@@ -14,10 +14,12 @@ import {
   LoginOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+// import { useEffect, useState } from "react";
+// import { usePathname, useRouter } from "next/navigation";
 import "@ant-design/v5-patch-for-react-19";
 import "../globals.css";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -36,15 +38,8 @@ export default function LayoutComponent({
 
   useEffect(() => {
     const path = pathName.slice(1).split("/");
-    if (path[0].length > 0) {
-      setCurrentPage(path[0]);
-    } else setCurrentPage("landing");
+    setCurrentPage(path[0]);
   }, [pathName]);
-
-  // If it's the landing page, render without Ant Design layout
-  if (currentPage === "landing") {
-    return <>{children}</>;
-  }
 
   return (
     <ConfigProvider

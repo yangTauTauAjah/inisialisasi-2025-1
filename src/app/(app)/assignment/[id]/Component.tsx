@@ -18,10 +18,10 @@ import {
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { Assignment, AssignmentGroup } from "@/app/lib/mockData";
+import { Assignment, AssignmentGroup } from "@/app/(app)/lib/mockData";
 import useApp from "antd/es/app/useApp";
-import { Submission } from "@/app/lib/supabase/server";
-import { createClient } from "@/app/lib/supabase/client";
+import { Submission } from "@/app/(app)/lib/supabase/server";
+import { createClient } from "@/app/(app)/lib/supabase/client";
 
 const { Title, Text } = Typography;
 const { Dragger } = Upload;

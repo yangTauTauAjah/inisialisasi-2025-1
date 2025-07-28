@@ -1,7 +1,7 @@
 import {
   AssignmentGroupsTableName,
   createClient,
-} from "@/app/lib/supabase/server";
+} from "@/app/(app)/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function PUT(
