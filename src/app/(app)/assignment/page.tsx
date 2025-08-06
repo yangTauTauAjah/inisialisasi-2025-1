@@ -4,9 +4,9 @@ import {
   AssignmentGroup,
 } from "@/app/(app)/lib/mockData";
 import { SubmissionPage } from "./Component";
-import { createClient } from "../lib/supabase/server";
+import { createClient } from "../lib/supabase/client";
 
-const supabase = await createClient();
+const supabase = createClient();
 
 const AssignmentGroups = await supabase
   .from("task-group")
