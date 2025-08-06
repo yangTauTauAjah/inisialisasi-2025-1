@@ -110,7 +110,7 @@ export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwi
             left: '50%',
             transform: 'translate(-50%, -50%)',
           }}
-        >hello "" world</div>
+        >hello world</div>
         <Image
           src="/logo-inis.png"
           alt="Logo"
