@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono, Ubuntu } from "next/font/google";
 import "@ant-design/v5-patch-for-react-19";
-import LayoutComponent from "../components/layoutContent";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import "../globals.css"; // Import global CSS
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,10 +36,15 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased`}
+        style={{
+          background: "var(--primary-bg)",
+          color: "var(--primary-text)",
+          margin: 0,
+          padding: 0,
+          minHeight: "100vh"
+        }}
       >
-        <LayoutComponent studentId={header.get("x-student-id")}>
-          {children}
-        </LayoutComponent>
+        {children}
       </body>
     </html>
   );
