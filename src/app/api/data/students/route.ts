@@ -8,10 +8,10 @@ import { /* NextRequest,  */NextResponse } from 'next/server';
 // if your RLS policies allow it.
 
 // Initialize Supabase client for server-side use
-const supabase = await createClient();
 
 export async function GET(/* request: NextRequest */) {
   try {
+    const supabase = await createClient();
     // Fetch all data from the 'students' table
     const { data, error } = await supabase
       .from(StudentsTableName)
