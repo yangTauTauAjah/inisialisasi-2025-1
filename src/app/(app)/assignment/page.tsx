@@ -1,24 +1,105 @@
-import React from "react";
-import {
-  Assignment,
-  AssignmentGroup,
-} from "@/app/(app)/lib/mockData";
-import { SubmissionPage } from "./Component";
-import { createClient } from "../lib/supabase/server";
+"use client"
 
-const supabase = await createClient();
+import { useState, useEffect } from "react"
+import { Header } from "@/components/assignment/header"
+import { TaskCard } from "@/app/components/assignment/task-card"
+import { TaskDetail } from "@/app/components/assignment/task-detail"
+import { AppSidebar } from "@/app/components/assignment/app-sidebar"
 
-const AssignmentGroups = await supabase
-  .from("task-group")
-  .select<"*", AssignmentGroup>("*")
-  .then((res) => res.data?.filter(e => e.is_active) || []);
+interface Task {
+  id: number
+  title: string
+  deadline: string
+  description?: string
+}
 
-const Assignments = await supabase
-  .from("sub-tasks")
-  .select<"*", Assignment>("*")
-  .then((res) => res.data?.filter(assignment => AssignmentGroups.some(group => group.id === assignment.task_group_id)) || []);
+interface DayData {
+  day: string
+  tasks: Task[]
+}
 
-const Page = () => {
+const daysData: DayData[] = [
+  {
+    day: "Inisialisasi Day 1",
+    tasks: [
+      {
+        id: 1,
+        title: "TUGAS 1",
+        deadline: "Selasa, 20 Oktober 2025. Pukul 23.59 WIB",
+        description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+      },
+      {
+        id: 2,
+        title: "TUGAS 2",
+        deadline: "Rabu, 21 Oktober 2025. Pukul 23.59 WIB",
+      },
+    ],
+  },
+  {
+    day: "Inisialisasi Day 2",
+    tasks: [
+      {
+        id: 3,
+        title: "TUGAS 3",
+        deadline: "Kamis, 22 Oktober 2025. Pukul 23.59 WIB",
+      },
+    ],
+  },
+  {
+    day: "Inisialisasi Day 3",
+    tasks: [],
+  },
+  {
+    day: "Inisialisasi Day 4",
+    tasks: [
+      {
+        id: 4,
+        title: "TUGAS 4",
+        deadline: "Minggu, 25 Oktober 2025. Pukul 23.59 WIB",
+      },
+      {
+        id: 5,
+        title: "TUGAS 5",
+        deadline: "Senin, 26 Oktober 2025. Pukul 23.59 WIB",
+      },
+    ],
+  },
+]
+
+export default function AssignmentPage() {
+  const [activeDay, setActiveDay] = useState(0)
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+  const [collapsed, setCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+      if (window.innerWidth < 768) {
+        setCollapsed(true)
+      }
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task)
+  }
+
+  const handleBackToList = () => {
+    setSelectedTask(null)
+  }
+
+  const handleDayChange = (dayIndex: number) => {
+    setActiveDay(dayIndex)
+    setSelectedTask(null) // Clear selected task when changing days
+  }
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header is now fixed and full width */}
