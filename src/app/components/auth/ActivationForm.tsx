@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { LogoIcon, User, Lock } from "./LogoIcon"
+import { User, Lock } from "./LogoIcon"
 import { Card, CardContent, CardHeader } from "../../components/ui/card"
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input"
@@ -10,7 +10,7 @@ import { Label } from "../../components/ui/label"
 import Image from 'next/image'
 import { message } from "antd"
 
-export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: any) {
+export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwitchToLogin: () => void, onActivationSuccess: () => void }) {
   const [nim, setNim] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -110,7 +110,7 @@ export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: any) {
             left: '50%',
             transform: 'translate(-50%, -50%)',
           }}
-        ></div>
+        >hello world</div>
         <Image
           src="/logo-inis.png"
           alt="Logo"
