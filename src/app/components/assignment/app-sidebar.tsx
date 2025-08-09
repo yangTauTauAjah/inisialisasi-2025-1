@@ -1,16 +1,6 @@
 "use client"
 
-interface Task {
-  id: number
-  title: string
-  deadline: string
-  description?: string
-}
-
-interface DayData {
-  day: string
-  tasks: Task[]
-}
+import { type Assignment, type DayData } from "@/app/lib/services/assignment-service"
 
 interface AppSidebarProps {
   daysData: DayData[]
