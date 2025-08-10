@@ -5,6 +5,7 @@ import "../globals.css";
 import Navigation from "../components/landing/Navigation";
 import { headers } from "next/headers";
 import Footer from "../components/landing/Footer";
+import { GlobalStateProvider } from "../../contexts/GlobalStateContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const header = await headers();
+  const studentId = header.get("x-student-id");
+
   return (
     <html lang="en">
       <body
@@ -42,9 +45,11 @@ export default async function RootLayout({
         }}
         className={`min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased`}
       >
-        <Navigation studentId={header.get("x-student-id")} />
-        {children}
-        <Footer />
+        <GlobalStateProvider initialNim={studentId || undefined}>
+          <Navigation studentId={studentId} />
+          {children}
+          <Footer />
+        </GlobalStateProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+import { useGlobalState } from "@/contexts/GlobalStateContext";
 import { Button } from "../ui/button"
 import Link from "next/link"
 
@@ -6,6 +7,7 @@ interface HeaderProps {
 }
 
 export function Header({ onMobileMenuToggle }: HeaderProps) {
+  const { state } = useGlobalState();
   return (
     <header className="bg-blue-900 text-white px-6 py-4 fixed top-0 left-0 right-0 z-50 w-full shadow-md h-16">
       <div className="flex items-center justify-between">
@@ -23,9 +25,14 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
           <Link href="/penugasan" className="hover:text-blue-200 transition-colors">
             PENUGASAN
           </Link>
-          <Button variant="outline" size="sm" className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4">
-            LOG OUT
-          </Button>
+          {state.nim ? 
+            <Button variant="outline" size="sm" className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4">
+              LOG OUT
+            </Button> : 
+            <Button variant="outline" size="sm" className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4">
+              LOG IN
+            </Button>
+          }
         </nav>
         <button 
           onClick={onMobileMenuToggle}
