@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2, Download, ExternalLink } from "lucide-react";
 import {
   assignmentService,
   type Assignment,
+  type Submission,
 } from "@/lib/services/assignment-service";
 import { useGlobalState } from "@/contexts/GlobalStateContext";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export interface DetailTask extends Assignment {
   deadline: string;
@@ -20,12 +23,37 @@ interface TaskDetailProps {
 }
 
 export function TaskDetail({ task, onBack }: TaskDetailProps) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionLink, setSubmissionLink] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [isLoadingSubmissions, setIsLoadingSubmissions] = useState(false);
+  const [isDeletingSubmission, setIsDeletingSubmission] = useState<
+    number | null
+  >(null);
   const { state } = useGlobalState();
+
+  const fetchSubmissions = useCallback(async () => {
+    if (!state.nim) return;
+
+    setIsLoadingSubmissions(true);
+    try {
+      const submissionsData =
+        await assignmentService.fetchSubmissionsByAssignment(task.id);
+      setSubmissions(submissionsData);
+    } catch (err) {
+      console.error("Error fetching submissions:", err);
+    } finally {
+      setIsLoadingSubmissions(false);
+    }
+  }, [state.nim, task.id]);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [fetchSubmissions]);
 
   const formatDeadline = (dueDate: string) => {
     const date = new Date(dueDate);
@@ -74,7 +102,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
     try {
       await assignmentService.submitAssignment(
         task.id,
-        task.name, // Use the assignment name automatically
+        selectedFile?.name || task.name, // Use the assignment name automatically
         selectedFile || undefined,
         submissionLink || undefined
       );
@@ -88,6 +116,9 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
         "file-upload"
       ) as HTMLInputElement;
       if (fileInput) fileInput.value = "";
+
+      // Refresh submissions list
+      await fetchSubmissions();
     } catch (err) {
       setError(
         err instanceof Error
@@ -97,6 +128,40 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleDeleteSubmission = async (submissionId: number) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus submission ini?")) {
+      return;
+    }
+
+    setIsDeletingSubmission(submissionId);
+    try {
+      await assignmentService.deleteSubmission(submissionId);
+      setSuccess("Submission berhasil dihapus!");
+      // Refresh submissions list
+      await fetchSubmissions();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Terjadi kesalahan saat menghapus submission"
+      );
+    } finally {
+      setIsDeletingSubmission(null);
+    }
+  };
+
+  const formatSubmissionDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString("id-ID", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Asia/Jakarta",
+    });
   };
 
   return (
@@ -170,7 +235,6 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
                     {success}
                   </div>
                 )}
-
                 <div className="space-y-4">
                   {task.is_link ? (
                     <div>
@@ -244,6 +308,129 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
               </div>
             )}
           </div>
+
+          {/* Submissions History Section */}
+          {state.nim && (
+            <div className="border-t pt-6">
+              <h2 className="text-xl font-semibold text-blue-600 mb-3">
+                Riwayat Pengumpulan
+              </h2>
+
+              {isLoadingSubmissions ? (
+                <div className="text-gray-500 text-center py-4">
+                  Memuat riwayat pengumpulan...
+                </div>
+              ) : submissions.length === 0 ? (
+                <div className="text-gray-500 text-center py-4">
+                  Belum ada pengumpulan tugas
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {submissions.map((submission) =>
+                    submission.link ? (
+                      <div
+                        key={submission.id}
+                        className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center mt-2">
+                              <ExternalLink className="h-4 w-4 text-blue-600 mr-1" />
+                              <a
+                                href={submission.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 font-medium text-xl"
+                              >
+                                {submission.link}
+                              </a>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              Dikumpulkan pada:{" "}
+                              {formatSubmissionDate(submission.created_at)}
+                            </p>
+                          </div>
+                          {/* <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() =>
+                              handleDeleteSubmission(submission.id)
+                            }
+                            disabled={isDeletingSubmission === submission.id}
+                            className="ml-4"
+                          >
+                            {isDeletingSubmission === submission.id ? (
+                              "Menghapus..."
+                            ) : (
+                              <>
+                                <Trash2 className="h-4 w-4 mr-1" />
+                                Hapus
+                              </>
+                            )}
+                          </Button> */}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        key={submission.id}
+                        className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">
+                              {submission.name}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              Dikumpulkan pada:{" "}
+                              {formatSubmissionDate(submission.created_at)}
+                            </p>
+                            <div className="flex items-center mt-2">
+                              <Download className="h-4 w-4 text-green-600 mr-1" />
+                              <a
+                                onClick={async (e) => {
+                                  e.preventDefault();
+                                  if (!submission.path) return;
+                                  const to = (
+                                    await createClient()
+                                      .storage.from("submissions")
+                                      .createSignedUrl(submission.path, 60, {
+                                        download: true,
+                                      })
+                                  ).data?.signedUrl;
+                                  if (to) router.push(to);
+                                }}
+                                className="text-green-600 hover:text-green-800 text-sm underline hover:cursor-pointer"
+                              >
+                                Download file
+                              </a>
+                            </div>
+                          </div>
+                          {/* <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() =>
+                              handleDeleteSubmission(submission.id)
+                            }
+                            disabled={isDeletingSubmission === submission.id}
+                            className="ml-4 hover:cursor-pointer"
+                          >
+                            {isDeletingSubmission === submission.id ? (
+                              "Menghapus..."
+                            ) : (
+                              <>
+                                <Trash2 className="h-4 w-4 mr-1" />
+                                Hapus
+                              </>
+                            )}
+                          </Button> */}
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
