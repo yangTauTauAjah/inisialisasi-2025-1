@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useGlobalState } from '@/contexts/GlobalStateContext';
 
-const Navigation = ({ studentId }: { studentId: string | null }) => {
+const Navigation = () => {
+  const { state } = useGlobalState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -49,7 +51,7 @@ const Navigation = ({ studentId }: { studentId: string | null }) => {
           ))}
           
           {/* Login/Logout Button */}
-          {studentId ? (
+          {state.isAuthenticated ? (
             <button
               onClick={handleLogout}
               className="bg-white text-[#06142E] font-bold text-sm text-uppercase px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-ubuntu"

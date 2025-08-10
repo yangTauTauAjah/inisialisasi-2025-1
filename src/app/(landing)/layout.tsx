@@ -46,7 +46,7 @@ export default async function RootLayout({
         className={`min-h-screen w-full ${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased`}
       >
         <GlobalStateProvider initialNim={studentId || undefined}>
-          <Navigation studentId={studentId} />
+          <Navigation />
           {children}
           <Footer />
         </GlobalStateProvider>
