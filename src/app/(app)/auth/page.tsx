@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { LoginForm } from "@/app/components/auth/LoginForm";
-import { ActivationForm } from "@/app/components/auth/ActivationForm";
-import { ActivationSuccess } from "@/app/components/auth/ActivationSuccess";
-import { ProtectedRoute } from "@/app/components/ProtectedRoute";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { ActivationForm } from "@/components/auth/ActivationForm";
+import { ActivationSuccess } from "@/components/auth/ActivationSuccess";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 type PageState = "login" | "activation" | "success";
 

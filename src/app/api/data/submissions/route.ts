@@ -4,7 +4,7 @@ import {
   StorageBucketName,
   StudentsTableName,
   SubmissionsTableName,
-} from "@/app/(app)/lib/supabase/server";
+} from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 const ALLOWED_FILE_TYPES = [

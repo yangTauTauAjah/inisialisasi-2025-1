@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, ReactNode, useEffect } from 'react';
-import { AuthService } from '@/app/lib/services/auth-service';
+import { AuthService } from '@/lib/services/auth-service';
 
 interface GlobalState {
   nim: string | undefined;

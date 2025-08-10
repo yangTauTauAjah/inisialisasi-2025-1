@@ -1,6 +1,6 @@
 "use client"
 
-import { type Assignment, type DayData } from "@/app/lib/services/assignment-service"
+import { type Assignment, type DayData } from "@/lib/services/assignment-service"
 
 interface AppSidebarProps {
   daysData: DayData[]

@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/assignment/header"
-import { AppSidebar } from "@/app/components/assignment/app-sidebar"
-import { AssignmentContent } from "@/app/components/assignment/assignment-content"
-import { MobileMenuDropdown } from "@/app/components/assignment/mobile-menu-dropdown"
-import { useMobileDetection } from "@/app/lib/hooks/use-mobile-detection"
-import { assignmentService, type Assignment, type DayData } from "@/app/lib/services/assignment-service"
+import { AppSidebar } from "@/components/assignment/app-sidebar"
+import { AssignmentContent } from "@/components/assignment/assignment-content"
+import { MobileMenuDropdown } from "@/components/assignment/mobile-menu-dropdown"
+import { useMobileDetection } from "@/lib/hooks/use-mobile-detection"
+import { assignmentService, type Assignment, type DayData } from "@/lib/services/assignment-service"
 
 export default function AssignmentPage() {
   const [activeDay, setActiveDay] = useState(0)

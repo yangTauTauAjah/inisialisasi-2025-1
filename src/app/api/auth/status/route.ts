@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyJWT } from "@/app/(app)/lib/supabase/middleware";
+import { verifyJWT } from "@/lib/supabase/middleware";
 
 export async function GET(request: NextRequest) {
   try {

@@ -1,4 +1,4 @@
-import { Assignment, AssignmentGroupsTableName, AssignmentsTableName, createClient } from "@/app/(app)/lib/supabase/server";
+import { Assignment, AssignmentGroupsTableName, AssignmentsTableName, createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 

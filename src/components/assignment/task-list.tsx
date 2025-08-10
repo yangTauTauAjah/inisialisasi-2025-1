@@ -1,7 +1,7 @@
 "use client"
 
 import { TaskCard } from "./task-card"
-import { type Assignment } from "@/app/lib/services/assignment-service"
+import { type Assignment } from "@/lib/services/assignment-service"
 
 interface TaskListProps {
   tasks: Assignment[]

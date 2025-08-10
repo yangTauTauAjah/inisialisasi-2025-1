@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import HeroSection from "@/app/components/landing/HeroSection";
-import AboutSection from "@/app/components/landing/AboutSection";
-import GuidelinesSection from "@/app/components/landing/GuidelinesSection";
-import OutfitSection from "@/app/components/landing/OutfitSection";
-import CriteriaSection from "@/app/components/landing/CriteriaSection";
+import HeroSection from "@/components/landing/HeroSection";
+import AboutSection from "@/components/landing/AboutSection";
+import GuidelinesSection from "@/components/landing/GuidelinesSection";
+import OutfitSection from "@/components/landing/OutfitSection";
+import CriteriaSection from "@/components/landing/CriteriaSection";
 
 const LandingPage = () => {
   return (

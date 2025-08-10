@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import {
   assignmentService,
   type Assignment,
-} from "@/app/lib/services/assignment-service";
+} from "@/lib/services/assignment-service";
 import { useGlobalState } from "@/contexts/GlobalStateContext";
 
 export interface DetailTask extends Assignment {

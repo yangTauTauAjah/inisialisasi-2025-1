@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { type Assignment } from "@/app/lib/services/assignment-service"
+import { type Assignment } from "@/lib/services/assignment-service"
 
 export interface BasicTask extends Assignment {
   deadline: string

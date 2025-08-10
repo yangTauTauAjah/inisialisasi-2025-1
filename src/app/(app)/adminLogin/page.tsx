@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { AdminLoginForm } from "@/app/components/auth/AdminLoginForm";
-import { ProtectedRoute } from "@/app/components/ProtectedRoute";
+import { AdminLoginForm } from "@/components/auth/AdminLoginForm";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 export default function AdminLogin() {
 

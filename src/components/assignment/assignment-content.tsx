@@ -3,7 +3,7 @@
 import { TaskList } from "./task-list"
 import { TaskDetail } from "./task-detail"
 import { MobileSidebarToggle } from "./mobile-sidebar-toggle"
-import { type Assignment } from "@/app/lib/services/assignment-service"
+import { type Assignment } from "@/lib/services/assignment-service"
 
 interface AssignmentContentProps {
   dayTitle: string

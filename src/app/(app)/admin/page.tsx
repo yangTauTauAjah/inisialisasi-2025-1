@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Typography, Card, Statistic } from "antd";
-import { createClient } from "../lib/supabase/client";
+import { createClient } from "../../../lib/supabase/client";
 
 const { Title, Text } = Typography;
 
