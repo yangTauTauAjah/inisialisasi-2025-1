@@ -2,24 +2,28 @@
 
 import type React from "react"
 import { useState } from "react"
-import { User, Lock } from "./LogoIcon"
+import { User, Lock, Key } from "./LogoIcon"
 import { Card, CardContent, CardHeader } from "../../components/ui/card"
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 import Image from 'next/image'
 import { message } from "antd"
+import { useGlobalState } from "@/contexts/GlobalStateContext"
 
 export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwitchToLogin: () => void, onActivationSuccess: () => void }) {
   const [nim, setNim] = useState("")
+  const [confirmToken, setConfirmToken] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
   const key = 'activation-message';
+  const { confirmToken: confirmTokenAction } = useGlobalState();
 
   const resetForm = () => {
     setNim("")
+    setConfirmToken("")
     setPassword("")
     setConfirmPassword("")
   }
@@ -43,35 +47,21 @@ export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwi
       return
     }
 
+    // Validate confirm token
+    if (!confirmToken.trim()) {
+      messageApi.open({ key, type: 'error', content: 'Token konfirmasi harus diisi', duration: 3 })
+      setIsLoading(false)
+      return
+    }
+
     try {
-      const response = await fetch('/api/auth/confirm', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          nim, 
-          password
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        messageApi.open({ 
-          key, 
-          type: 'error', 
-          content: data.message || data.error || 'Aktivasi gagal. Silakan coba lagi.', 
-          duration: 3 
-        })
-        return
-      }
-
+      await confirmTokenAction(nim, confirmToken, password)
+      
       // Activation successful
       messageApi.open({ 
         key, 
         type: 'success', 
-        content: data.message || 'Aktivasi berhasil! Redirecting...', 
+        content: 'Aktivasi berhasil! Silakan login dengan password baru Anda.', 
         duration: 2 
       })
       
@@ -87,7 +77,7 @@ export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwi
       messageApi.open({ 
         key, 
         type: 'error', 
-        content: 'Network error. Silakan cek koneksi dan coba lagi.', 
+        content: error instanceof Error ? error.message : 'Aktivasi gagal. Silakan coba lagi.', 
         duration: 3 
       })
     } finally {
@@ -143,6 +133,24 @@ export function ActivationForm({ onSwitchToLogin, onActivationSuccess }: { onSwi
                   placeholder="Masukkan NIM Anda"
                   value={nim}
                   onChange={(e) => setNim(e.target.value)}
+                  className="pl-8 pr-3 bg-gray-800/80 border-gray-600/50 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20 backdrop-blur-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmToken" className="text-gray-300">
+                Token Konfirmasi
+              </Label>
+              <div className="relative">
+                <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-200 h-4 w-4 z-10" />
+                <Input
+                  id="confirmToken"
+                  type="text"
+                  placeholder="Masukkan Token Konfirmasi"
+                  value={confirmToken}
+                  onChange={(e) => setConfirmToken(e.target.value)}
                   className="pl-8 pr-3 bg-gray-800/80 border-gray-600/50 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20 backdrop-blur-sm"
                   required
                 />

@@ -1,4 +1,4 @@
-import { UserIcon, LockIcon } from "lucide-react"
+import { UserIcon, LockIcon, KeyIcon } from "lucide-react"
 
 export function LogoIcon() {
   return (
@@ -14,3 +14,4 @@ export function LogoIcon() {
 
 export const User = UserIcon
 export const Lock = LockIcon
+export const Key = KeyIcon

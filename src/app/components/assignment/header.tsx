@@ -1,13 +1,31 @@
 import { useGlobalState } from "@/contexts/GlobalStateContext";
 import { Button } from "../ui/button"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void
 }
 
 export function Header({ onMobileMenuToggle }: HeaderProps) {
-  const { state } = useGlobalState();
+  const { state, logout } = useGlobalState();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/");
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if logout fails, redirect to home
+      router.push("/");
+    }
+  };
+
+  const handleLogin = () => {
+    router.push("/auth");
+  };
+
   return (
     <header className="bg-blue-900 text-white px-6 py-4 fixed top-0 left-0 right-0 z-50 w-full shadow-md h-16">
       <div className="flex items-center justify-between">
@@ -25,11 +43,21 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
           <Link href="/penugasan" className="hover:text-blue-200 transition-colors">
             PENUGASAN
           </Link>
-          {state.nim ? 
-            <Button variant="outline" size="sm" className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4">
+          {state.isAuthenticated ? 
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4"
+              onClick={handleLogout}
+            >
               LOG OUT
             </Button> : 
-            <Button variant="outline" size="sm" className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-blue-900 bg-white hover:bg-gray-100 rounded-full px-4"
+              onClick={handleLogin}
+            >
               LOG IN
             </Button>
           }

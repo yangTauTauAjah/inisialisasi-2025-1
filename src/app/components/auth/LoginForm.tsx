@@ -10,6 +10,7 @@ import { Button } from "../../components/ui/button"
 import { LogoIcon, User, Lock } from "./LogoIcon"
 import Image from 'next/image'
 import { message } from "antd"
+import { useGlobalState } from "@/contexts/GlobalStateContext"
 
 interface LoginFormProps {
   onSwitchToActivation: () => void
@@ -22,6 +23,7 @@ export function LoginForm({ onSwitchToActivation }: LoginFormProps) {
   const router = useRouter()
   const [messageApi, contextHolder] = message.useMessage();
   const key = 'login-message';
+  const { login } = useGlobalState();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,30 +31,15 @@ export function LoginForm({ onSwitchToActivation }: LoginFormProps) {
     messageApi.open({ key, type: 'loading', content: 'Logging you in, please wait...' })
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nim, password }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        messageApi.open({ key, type: 'error', content: data.error || 'Login failed. Please try again.', duration: 2 })
-        return
-      }
-
-      // Login successful
-      messageApi.open({ key, type: 'success', content: data.message || 'Login successful! Redirecting...', duration: 2 })
+      await login(nim, password)
+      messageApi.open({ key, type: 'success', content: 'Login successful! Redirecting...', duration: 2 })
       setTimeout(() => {
         router.push("/assignment")
       }, 1200)
       
     } catch (error) {
       console.error('Login error:', error)
-      messageApi.open({ key, type: 'error', content: 'Network error. Please check your connection and try again.', duration: 2 })
+      messageApi.open({ key, type: 'error', content: error instanceof Error ? error.message : 'Login failed. Please try again.', duration: 2 })
     } finally {
       setIsLoading(false)
     }

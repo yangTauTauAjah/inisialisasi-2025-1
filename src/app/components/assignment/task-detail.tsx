@@ -170,6 +170,73 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
                     {success}
                   </div>
                 )}
+
+                <div className="space-y-4">
+                  {task.is_link ? (
+                    <div>
+                      <label
+                        htmlFor="submission-link"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Link Submission *
+                      </label>
+                      <input
+                        id="submission-link"
+                        type="url"
+                        value={submissionLink}
+                        onChange={(e) => setSubmissionLink(e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="https://example.com"
+                        disabled={isOverdueTask}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <label
+                        htmlFor="file-upload"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Upload File Tugas *
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        onChange={handleFileChange}
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
+                        disabled={isOverdueTask}
+                      />
+                      {selectedFile && (
+                        <p className="text-sm text-gray-600 mt-1">
+                          File dipilih: {selectedFile.name} (
+                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || isOverdueTask}
+                    className={`${
+                      isOverdueTask
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    } disabled:bg-gray-400`}
+                  >
+                    {isOverdueTask
+                      ? "Tugas Telah Berakhir"
+                      : isSubmitting
+                      ? "Mengirim..."
+                      : "Submit Tugas"}
+                  </Button>
+
+                  {isOverdueTask && (
+                    <p className="text-red-600 text-sm">
+                      Pengumpulan tugas telah ditutup karena melewati batas
+                      waktu
+                    </p>
+                  )}
+                </div>
               </>
             ) : (
               <div className="text-red-600 text-sm">

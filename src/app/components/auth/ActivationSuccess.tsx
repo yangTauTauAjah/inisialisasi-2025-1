@@ -3,7 +3,6 @@
 import { Button } from "../../components/ui/button"
 import { Card, CardContent, CardHeader } from "../../components/ui/card"
 import { CheckCircle } from "lucide-react"
-import { LogoIcon } from "./LogoIcon"
 import Image from 'next/image'
 
 interface ActivationSuccessProps {
@@ -39,7 +38,7 @@ export function ActivationSuccess({ onSwitchToLogin }: ActivationSuccessProps) {
       {/* Form card with enhanced styling */}
       <Card className="w-full max-w-md bg-gray-900/95 border-blue-500/30 shadow-2xl backdrop-blur-xl relative z-10 px-4 py-6">
         <CardHeader className="text-center pb-6">
-          <h2 className="text-2xl font-bold text-white bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             AKTIVASI AKUN
           </h2>
         </CardHeader>
