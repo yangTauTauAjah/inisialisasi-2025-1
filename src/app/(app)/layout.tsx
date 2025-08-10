@@ -3,6 +3,7 @@ import "@ant-design/v5-patch-for-react-19";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import "../globals.css"; // Import global CSS
+import { GlobalStateProvider } from "../../contexts/GlobalStateContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const header = await headers();
+  const studentId = header.get("x-student-id");
   
   return (
     <html lang="en">
@@ -44,7 +46,9 @@ export default async function RootLayout({
           minHeight: "100vh"
         }}
       >
-        {children}
+        <GlobalStateProvider initialNim={studentId || undefined}>
+          {children}
+        </GlobalStateProvider>
       </body>
     </html>
   );
