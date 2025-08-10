@@ -26,13 +26,13 @@ export function MobileMenuDropdown({
             HOME
           </Link>
           <Link
-            href="/tata-tertib"
+            href="/#guidelines"
             className="block px-4 py-2 hover:bg-blue-800 transition-colors"
           >
             TATA TERTIB
           </Link>
           <Link
-            href="/berita"
+            href="/announcement"
             className="block px-4 py-2 hover:bg-blue-800 transition-colors"
           >
             BERITA & PENGUMUMAN

@@ -98,7 +98,7 @@ const Navigation = () => {
             ))}
             
             {/* Mobile Login/Logout Button */}
-            {studentId && studentId.length > 0 ? (
+            {state.isAuthenticated ? (
               <button
                 onClick={() => {
                   handleLogout();

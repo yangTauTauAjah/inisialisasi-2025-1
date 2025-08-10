@@ -34,10 +34,10 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
           <Link href="/" className="hover:text-blue-200 transition-colors">
             HOME
           </Link>
-          <Link href="/tata-tertib" className="hover:text-blue-200 transition-colors">
+          <Link href="/#guidelines" className="hover:text-blue-200 transition-colors">
             TATA TERTIB
           </Link>
-          <Link href="/berita" className="hover:text-blue-200 transition-colors">
+          <Link href="/announcement" className="hover:text-blue-200 transition-colors">
             BERITA & PENGUMUMAN
           </Link>
           <Link href="/penugasan" className="hover:text-blue-200 transition-colors">
