@@ -2,7 +2,7 @@ import { Geist, Geist_Mono, Ubuntu } from "next/font/google";
 import "@ant-design/v5-patch-for-react-19";
 import { Metadata } from "next";
 import { headers } from "next/headers";
-import "../globals.css"; // Import global CSS
+import "./globals.css"; // Import global CSS
 import { GlobalStateProvider } from "../../contexts/GlobalStateContext";
 
 const geistSans = Geist({

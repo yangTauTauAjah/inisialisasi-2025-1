@@ -235,7 +235,7 @@ export default function AdminLogin() {
             }
           }
         `}</style>
-      </div>
+    </div>
     </ProtectedRoute>
   );
 }

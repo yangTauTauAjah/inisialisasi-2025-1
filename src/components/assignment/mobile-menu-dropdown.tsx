@@ -1,7 +1,8 @@
 "use client";
 
 import { useGlobalState } from "@/contexts/GlobalStateContext";
-import Link from "antd/es/typography/Link";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface MobileMenuDropdownProps {
   isOpen: boolean;
@@ -12,44 +13,78 @@ export function MobileMenuDropdown({
   isOpen,
   onClose,
 }: MobileMenuDropdownProps) {
-  const { state } = useGlobalState();
+  const { state, logout } = useGlobalState();
+  const router = useRouter();
+
   if (!isOpen) return null;
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/");
+      onClose();
+    } catch (error) {
+      console.error('Logout error:', error);
+      router.push("/");
+      onClose();
+    }
+  };
+
+  const handleLogin = () => {
+    router.push("/auth");
+    onClose();
+  };
 
   return (
     <div className="fixed top-16 right-0 z-50 lg:hidden">
-      <div className="bg-blue-900 text-white shadow-lg rounded-b-lg border border-blue-800 min-w-48">
-        <nav className="py-2">
+      {/* Localized backdrop overlay */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={onClose}></div>
+      
+      {/* Menu container */}
+      <div className="relative bg-blue-900 shadow-xl min-w-48">
+        <nav className="flex flex-col py-3">
           <Link
             href="/"
-            className="block px-4 py-2 hover:bg-blue-800 transition-colors"
+            className="flex items-center px-4 py-3 hover:bg-blue-800 transition-colors duration-200 text-sm font-medium text-white"
+            onClick={onClose}
           >
             HOME
           </Link>
           <Link
             href="/#guidelines"
-            className="block px-4 py-2 hover:bg-blue-800 transition-colors"
+            className="flex items-center px-4 py-3 hover:bg-blue-800 transition-colors duration-200 text-sm font-medium text-white"
+            onClick={onClose}
           >
             TATA TERTIB
           </Link>
           <Link
             href="/announcement"
-            className="block px-4 py-2 hover:bg-blue-800 transition-colors"
+            className="flex items-center px-4 py-3 hover:bg-blue-800 transition-colors duration-200 text-sm font-medium text-white"
+            onClick={onClose}
           >
             BERITA & PENGUMUMAN
           </Link>
           <Link
             href="/penugasan"
-            className="block px-4 py-2 hover:bg-blue-800 transition-colors"
+            className="flex items-center px-4 py-3 hover:bg-blue-800 transition-colors duration-200 text-sm font-medium text-white"
+            onClick={onClose}
           >
             PENUGASAN
           </Link>
-          <div className="border-t border-blue-800 mt-2 pt-2">
-            {state.nim ? (
-              <button className="w-full text-left px-4 py-2 bg-white text-blue-900 rounded mx-2 hover:bg-gray-100 transition-colors">
+          
+          <div className="mt-2 pt-2 px-3">
+            {state.isAuthenticated ? (
+              <button 
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center px-4 py-2.5 bg-white text-blue-900 rounded-full hover:bg-gray-100 transition-colors duration-200 text-sm font-medium"
+              >
                 LOG OUT
               </button>
             ) : (
-              <button className="w-full text-left px-4 py-2 bg-white text-blue-900 rounded mx-2 hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={handleLogin}
+                className="w-full flex items-center justify-center px-4 py-2.5 bg-white text-blue-900 rounded-full hover:bg-gray-100 transition-colors duration-200 text-sm font-medium"
+              >
                 LOG IN
               </button>
             )}

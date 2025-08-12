@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Ubuntu } from "next/font/google";
 import "@ant-design/v5-patch-for-react-19";
 import { Metadata } from "next";
-import "../globals.css";
+import "./globals.css";
 import Navigation from "../../components/landing/Navigation";
 import { headers } from "next/headers";
 import Footer from "../../components/landing/Footer";

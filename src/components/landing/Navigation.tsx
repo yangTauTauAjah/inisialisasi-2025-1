@@ -9,8 +9,8 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { name: 'HOME', href: '#home' },
-    { name: 'TATA TERTIB', href: '#guidelines' },
+    { name: 'HOME', href: '/' },
+    { name: 'TATA TERTIB', href: '/#guidelines' },
     { name: 'BERITA & PENGUMUMAN', href: '/announcement' },
     { name: 'PENUGASAN', href: '/assignment' }
   ];
@@ -31,8 +31,8 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-20 px-8 backdrop-blur">
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-8 backdrop-blur">
+      <div className="max-w-7xl mx-auto h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="#home" className="text-white font-bold text-3xl text-uppercase letter-spacing-heading hover:text-accent-text transition-colors font-sacco">
           INISIALISASI 2025
@@ -74,7 +74,7 @@ const Navigation = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <div className="w-6 h-6 flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center">
             <span className={`block w-5 h-0.5 bg-white transition-all ${isMenuOpen ? 'rotate-45 translate-y-1' : ''}`}></span>
             <span className={`block w-5 h-0.5 bg-white my-1 transition-all ${isMenuOpen ? 'opacity-0' : ''}`}></span>
             <span className={`block w-5 h-0.5 bg-white transition-all ${isMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></span>
@@ -84,8 +84,8 @@ const Navigation = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-20 left-0 right-0 bg-secondary-bg backdrop-blur border-t border-accent-text/20">
-          <div className="px-8 py-4 space-y-4">
+        <div className="md:hidden bg-secondary-bg backdrop-blur border-t border-accent-text/20">
+          <div className="py-4 space-y-4">
             {navItems.map((item) => (
               <Link
                 key={item.name}

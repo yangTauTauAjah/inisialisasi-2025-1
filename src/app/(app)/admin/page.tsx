@@ -45,7 +45,7 @@ const AdminDashboard = () => {
       });
   }, [setNumStudent, setNumAssignment, setNumSubmission]);
   return (
-    <div className="p-8 text-center">
+    <div className="p-8 text-center min-h-screen">
       <Title level={3} className="text-white">
         Admin Dashboard Overview
       </Title>
