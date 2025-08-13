@@ -13,12 +13,14 @@ const AnnouncementPage = () => {
       </div>
 
       <div className="max-w-3xl">
-        <img
-          src="/guidelines.png"
-          alt="Guidelines and Rules"
-          className="w-full h-auto object-contain"
-          draggable={false}
-        />
+        <div className="px-8 flex flex-col items-center justify-center">
+          <img
+            src="/guidelines.png"
+            alt="Guidelines and Rules"
+            className="w-full h-auto object-contain"
+            draggable={false}
+          />
+        </div>
       </div>
     </div>
   );
