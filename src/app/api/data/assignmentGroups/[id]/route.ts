@@ -1,7 +1,7 @@
 import {
   AssignmentGroupsTableName,
   createClient,
-} from "@/app/(app)/lib/supabase/server";
+} from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 type Params = Promise<{ id: string }>;

@@ -1,6 +1,6 @@
 // import { mockStudents } from '@/app/lib/mockData';
-import { signJWT } from "@/app/(app)/lib/supabase/middleware";
-import { createClient } from "@/app/(app)/lib/supabase/server";
+import { signJWT } from "@/lib/supabase/middleware";
+import { createClient } from "@/lib/supabase/server";
 import { compare } from "bcrypt";
 import { NextResponse } from "next/server";
 

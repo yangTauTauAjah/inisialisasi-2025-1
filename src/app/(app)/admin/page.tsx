@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Typography, Card, Statistic } from "antd";
-import { createClient } from "../lib/supabase/client";
+import { createClient } from "../../../lib/supabase/client";
 
 const { Title, Text } = Typography;
 
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
       });
   }, [setNumStudent, setNumAssignment, setNumSubmission]);
   return (
-    <div className="p-8 text-center">
+    <div className="p-8 text-center min-h-screen">
       <Title level={3} className="text-white">
         Admin Dashboard Overview
       </Title>

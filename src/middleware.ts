@@ -3,7 +3,7 @@ import {
   parseStudentIdFromCookies,
   printRequest,
   signJWT,
-} from "@/app/(app)/lib/supabase/middleware";
+} from "@/lib/supabase/middleware";
 
 const protectedRoutes = [
   { route: "/admin", method: ["get", "post", "delete", "delete"] },
