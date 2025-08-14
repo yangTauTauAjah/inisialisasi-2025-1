@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "ts-node --project tests/tsconfig.json tests/run-tests.ts all",
+    "test:list": "ts-node --project tests/tsconfig.json tests/run-tests.ts list",
+    "test:unauthenticated": "ts-node --project tests/tsconfig.json tests/run-tests.ts role unauthenticated",
+    "test:student": "ts-node --project tests/tsconfig.json tests/run-tests.ts role regularStudent",
+    "test:admin": "ts-node --project tests/tsconfig.json tests/run-tests.ts role admin",
+    "test:help": "ts-node --project tests/tsconfig.json tests/run-tests.ts help"
   },
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
@@ -35,13 +41,14 @@
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20",
+    "@types/node": "^20.19.10",
     "@types/node-jose": "^1.1.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5"
   }
