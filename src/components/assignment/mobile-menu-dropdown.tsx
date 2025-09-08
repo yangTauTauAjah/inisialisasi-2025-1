@@ -1,7 +1,6 @@
 "use client";
 
 import { useGlobalState } from "@/contexts/GlobalStateContext";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface MobileMenuDropdownProps {
@@ -18,20 +17,24 @@ export function MobileMenuDropdown({
 
   if (!isOpen) return null;
 
+  const handleNavigation = (href: string) => {
+    window.location.href = href;
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
+      window.location.href = "/";
       onClose();
     } catch (error) {
       console.error('Logout error:', error);
-      router.push("/");
+      window.location.href = "/";
       onClose();
     }
   };
 
   const handleLogin = () => {
-    router.push("/auth");
+    window.location.href = "/auth";
     onClose();
   };
 
@@ -46,38 +49,46 @@ export function MobileMenuDropdown({
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent opacity-50"></div>
         
         <nav className="flex flex-col py-2">
-          <Link
-            href="/"
-            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group"
-            onClick={onClose}
+          <button
+            onClick={() => {
+              handleNavigation("/");
+              onClose();
+            }}
+            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group w-full text-left"
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             HOME
-          </Link>
-          <Link
-            href="/#guidelines"
-            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group"
-            onClick={onClose}
+          </button>
+          <button
+            onClick={() => {
+              handleNavigation("/#guidelines");
+              onClose();
+            }}
+            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group w-full text-left"
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             TATA TERTIB
-          </Link>
-          <Link
-            href="/announcement"
-            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group"
-            onClick={onClose}
+          </button>
+          <button
+            onClick={() => {
+              handleNavigation("/announcement");
+              onClose();
+            }}
+            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group w-full text-left"
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             BERITA & PENGUMUMAN
-          </Link>
-          <Link
-            href="/penugasan"
-            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group"
-            onClick={onClose}
+          </button>
+          <button
+            onClick={() => {
+              handleNavigation("/penugasan");
+              onClose();
+            }}
+            className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group w-full text-left"
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             PENUGASAN
-          </Link>
+          </button>
           
           <div className="mt-3 pt-3 px-4">
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-3"></div>

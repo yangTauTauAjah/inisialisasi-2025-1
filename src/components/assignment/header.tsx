@@ -1,6 +1,5 @@
 import { useGlobalState } from "@/contexts/GlobalStateContext";
 import { Button } from "../ui/button"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 interface HeaderProps {
@@ -11,19 +10,23 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
   const { state, logout } = useGlobalState();
   const router = useRouter();
 
+  const handleNavigation = (href: string) => {
+    window.location.href = href;
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.error('Logout error:', error);
       // Even if logout fails, redirect to home
-      router.push("/");
+      window.location.href = "/";
     }
   };
 
   const handleLogin = () => {
-    router.push("/auth");
+    window.location.href = "/auth";
   };
 
   return (
@@ -31,18 +34,30 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold tracking-wide">INISIALISASI 2025</h1>
         <nav className="hidden lg:flex items-center space-x-6">
-          <Link href="/" className="hover:text-blue-200 transition-colors">
+          <button 
+            onClick={() => handleNavigation("/")} 
+            className="hover:text-blue-200 transition-colors"
+          >
             HOME
-          </Link>
-          <Link href="/#guidelines" className="hover:text-blue-200 transition-colors">
+          </button>
+          <button 
+            onClick={() => handleNavigation("/#guidelines")} 
+            className="hover:text-blue-200 transition-colors"
+          >
             TATA TERTIB
-          </Link>
-          <Link href="/announcement" className="hover:text-blue-200 transition-colors">
+          </button>
+          <button 
+            onClick={() => handleNavigation("/announcement")} 
+            className="hover:text-blue-200 transition-colors"
+          >
             BERITA & PENGUMUMAN
-          </Link>
-          <Link href="/penugasan" className="hover:text-blue-200 transition-colors">
+          </button>
+          <button 
+            onClick={() => handleNavigation("/penugasan")} 
+            className="hover:text-blue-200 transition-colors"
+          >
             PENUGASAN
-          </Link>
+          </button>
           {state.isAuthenticated ? 
             <Button 
               variant="outline" 

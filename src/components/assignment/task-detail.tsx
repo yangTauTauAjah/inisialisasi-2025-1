@@ -130,7 +130,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
     }
   };
 
-  const handleDeleteSubmission = async (submissionId: number) => {
+  /* const handleDeleteSubmission = async (submissionId: number) => {
     if (!confirm("Apakah Anda yakin ingin menghapus submission ini?")) {
       return;
     }
@@ -150,7 +150,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
     } finally {
       setIsDeletingSubmission(null);
     }
-  };
+  }; */
 
   const formatSubmissionDate = (timestamp: number) => {
     const date = new Date(timestamp);
