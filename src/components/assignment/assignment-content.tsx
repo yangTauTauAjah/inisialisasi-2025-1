@@ -32,7 +32,7 @@ export function AssignmentContent({
   return (
     <div className="w-full">
       {/* Mobile sidebar toggle button */}
-      {isMobile && sidebarCollapsed && (
+      {isMobile /* && sidebarCollapsed */ && (
         <MobileSidebarToggle onToggle={onSidebarToggle} />
       )}
 
