@@ -283,9 +283,9 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
                     disabled={isSubmitting || isOverdueTask}
                     className={`${
                       isOverdueTask
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
-                    } disabled:bg-gray-400`}
+                        ? "bg-gray-400 cursor-not-allowed text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                    } disabled:bg-gray-400 disabled:text-white`}
                   >
                     {isOverdueTask
                       ? "Tugas Telah Berakhir"
