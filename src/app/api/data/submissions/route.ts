@@ -6,25 +6,15 @@ import {
   SubmissionsTableName,
 } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import { FILE_UPLOAD_CONFIG } from "@/lib/constants/file-upload";
 
-const ALLOWED_FILE_TYPES = [
-  "application/pdf",
-  "image/jpeg",
-  "image/png",
-  "application/zip",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.ms-powerpoint",
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "text/plain",
-  // "application/x-python-code",
-  // "application/javascript",
-  "application/x-rar-compressed",
-  "video/mp4",
-  "image/vnd.adobe.photoshop",
-  "application/vnd.figma",
+// Extended allowed file types for this specific application
+const ALLOWED_FILE_TYPES: string[] = [
+  ...FILE_UPLOAD_CONFIG.ALLOWED_FILE_TYPES,
+  // Additional types specific to this app
+  // "video/mp4",
+  // "image/vnd.adobe.photoshop",
+  // "application/vnd.figma",
 ];
 
 export async function GET(/* request: NextRequest */) {
@@ -222,12 +212,12 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // --- Optional: Server-side validation ---
-      // Example: Check file size
-      const MAX_FILE_SIZE = 20 * 1024 * 1024; // 2MB
-      if (file.size > MAX_FILE_SIZE) {
+      // --- Server-side file size validation ---
+      if (file.size > FILE_UPLOAD_CONFIG.MAX_FILE_SIZE_BYTES) {
         return NextResponse.json(
-          { error: "File size exceeds 20MB limit" },
+          { 
+            error: `File size exceeds ${FILE_UPLOAD_CONFIG.MAX_FILE_SIZE_KB}KB limit. Your file: ${FILE_UPLOAD_CONFIG.formatFileSize(file.size)}` 
+          },
           { status: 413 }
         );
       }

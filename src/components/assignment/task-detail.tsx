@@ -12,6 +12,7 @@ import {
 import { useGlobalState } from "@/contexts/GlobalStateContext";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { FILE_UPLOAD_CONFIG } from "@/lib/constants/file-upload";
 
 export interface DetailTask extends Assignment {
   deadline: string;
@@ -22,6 +23,9 @@ interface TaskDetailProps {
   onBack: () => void;
 }
 
+// File size limit constants (from shared config)
+const { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_KB } = FILE_UPLOAD_CONFIG;
+
 export function TaskDetail({ task, onBack }: TaskDetailProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,9 +35,9 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
   const [success, setSuccess] = useState("");
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [isLoadingSubmissions, setIsLoadingSubmissions] = useState(false);
-  const [isDeletingSubmission, setIsDeletingSubmission] = useState<
-    number | null
-  >(null);
+  // const [isDeletingSubmission, setIsDeletingSubmission] = useState<
+  //   number | null
+  // >(null);
   const { state } = useGlobalState();
 
   const fetchSubmissions = useCallback(async () => {
@@ -76,9 +80,21 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
 
   const isOverdueTask = isOverdue();
 
+  // Use the shared formatFileSize function
+  const formatFileSize = FILE_UPLOAD_CONFIG.formatFileSize;
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Check file size
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        setError(`Ukuran file terlalu besar. Maksimal ${MAX_FILE_SIZE_KB}KB. File Anda: ${formatFileSize(file.size)}`);
+        setSelectedFile(null);
+        // Reset the input
+        event.target.value = '';
+        return;
+      }
+      
       setSelectedFile(file);
       setError("");
     }
@@ -92,6 +108,12 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
 
     if (!task.is_link && !selectedFile) {
       setError("File harus diupload untuk tugas ini");
+      return;
+    }
+
+    // Double-check file size before submission
+    if (!task.is_link && selectedFile && selectedFile.size > MAX_FILE_SIZE_BYTES) {
+      setError(`Ukuran file terlalu besar. Maksimal ${MAX_FILE_SIZE_KB}KB. File Anda: ${formatFileSize(selectedFile.size)}`);
       return;
     }
 
@@ -262,6 +284,11 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
                       >
                         Upload File Tugas *
                       </label>
+                      <div className="mb-2">
+                        <p className="text-xs text-gray-500">
+                          Maksimal ukuran file: {MAX_FILE_SIZE_KB}KB
+                        </p>
+                      </div>
                       <input
                         id="file-upload"
                         type="file"
@@ -272,7 +299,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
                       {selectedFile && (
                         <p className="text-sm text-gray-600 mt-1">
                           File dipilih: {selectedFile.name} (
-                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                          {formatFileSize(selectedFile.size)})
                         </p>
                       )}
                     </div>
