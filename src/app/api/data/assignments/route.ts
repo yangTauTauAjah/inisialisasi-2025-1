@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       .from(AssignmentsTableName)
       .insert([{ ...body, due: new Date(body.due) }])
       .select('id,name,description,due,is_link,task_group_id')
-      .order('sub_task_id');
+      .order('id');
 
     if (error) {
       console.error("Error creating assignment:", error.message);
