@@ -17,19 +17,96 @@ const ALLOWED_FILE_TYPES: string[] = [
   // "application/vnd.figma",
 ];
 
-export async function GET(/* request: NextRequest */) {
+export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from(SubmissionsTableName)
-      .select("*");
 
-    if (error) {
-      console.error("Error fetching submissions:", error.message);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const getNim = request.nextUrl.searchParams.get("nim");
+
+    const nim = request.headers.get("x-student-id");
+
+    if (typeof nim !== "string")
+      return NextResponse.json(
+        { error: "Unauthorized. Please login before submitting" },
+        { status: 401 }
+      );
+
+    const { data: student } = await supabase
+      .from(StudentsTableName)
+      .select<"id, is_admin", { id: number; is_admin: boolean }>("id, is_admin")
+      .eq("nim", nim)
+      .single();
+
+    if (!student)
+      return NextResponse.json(
+        { error: `No student found with NIM: ${nim}` },
+        { status: 404 }
+      );
+
+    if (!student.is_admin) {
+
+      if (getNim && getNim.length > 0 && getNim !== nim) {
+
+        return NextResponse.json({ error: "You dont't have access to this resource" }, { status: 401 });
+
+      }
+
+      const { data, error } = await supabase
+        .from(SubmissionsTableName)
+        .select("*")
+        .eq("user_id", student.id);
+
+      if (error) {
+        console.error("Error fetching submissions:", error.message);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      return NextResponse.json(data, { status: 200 });
+    }  else {
+      if (typeof getNim === "string" && getNim.length > 0) {
+
+        console.log("getNim", getNim);
+
+        const { data: student } = await supabase
+          .from(StudentsTableName)
+          .select<"id", { id: number }>("id")
+          .eq("nim", getNim)
+          .single();
+
+        console.log("student", student);
+
+        if (!student)
+          return NextResponse.json(
+            { error: `No student found with NIM: ${getNim}` },
+            { status: 404 }
+          );
+
+        const { data, error } = await supabase
+          .from(SubmissionsTableName)
+          .select("*")
+          .eq("user_id", student.id);
+
+        console.log("data", data);
+
+        if (error) {
+          console.error("Error fetching submissions:", error.message);
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json(data, { status: 200 });
+      } else {
+        const { data, error } = await supabase
+          .from(SubmissionsTableName)
+          .select("*");
+
+        if (error) {
+          console.error("Error fetching submissions:", error.message);
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json(data, { status: 200 });
+      }
     }
-
-    return NextResponse.json(data, { status: 200 });
   } catch (err) {
     console.error("An unexpected error occurred in submissions API:", err);
     return NextResponse.json(
@@ -117,11 +194,14 @@ export async function POST(request: NextRequest) {
     for (const entry of (await request.formData()).entries()) {
       formData[entry[0]] = entry[1];
     }
-    
+
     const nim = request.headers.get("x-student-id");
 
     if (typeof nim !== "string")
-      return NextResponse.json({ error: "Unauthorized. Please login before submitting" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized. Please login before submitting" },
+        { status: 401 }
+      );
 
     const { data: student } = await supabase
       .from(StudentsTableName)
@@ -215,8 +295,12 @@ export async function POST(request: NextRequest) {
       // --- Server-side file size validation ---
       if (file.size > FILE_UPLOAD_CONFIG.MAX_FILE_SIZE_BYTES) {
         return NextResponse.json(
-          { 
-            error: `File size exceeds ${FILE_UPLOAD_CONFIG.MAX_FILE_SIZE_KB}KB limit. Your file: ${FILE_UPLOAD_CONFIG.formatFileSize(file.size)}` 
+          {
+            error: `File size exceeds ${
+              FILE_UPLOAD_CONFIG.MAX_FILE_SIZE_KB
+            }KB limit. Your file: ${FILE_UPLOAD_CONFIG.formatFileSize(
+              file.size
+            )}`,
           },
           { status: 413 }
         );
@@ -259,7 +343,7 @@ export async function POST(request: NextRequest) {
       const { data, error } = await supabase
         .from(SubmissionsTableName)
         .insert([submissionData])
-        .select('id,name,path,link,created_at');
+        .select("id,name,path,link,created_at");
 
       if (error) {
         console.error("Error creating submission:", error.message);
@@ -268,7 +352,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             message: "Submission has been successfully uploaded",
-            data: data[0]
+            data: data[0],
           },
           { status: 201 }
         );
