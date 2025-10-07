@@ -73,9 +73,9 @@ class AssignmentService {
     }
   }
 
-  async fetchSubmissionsByAssignment(assignmentId: number): Promise<Submission[]> {
+  async fetchSubmissionsByAssignment(assignmentId: number, nim: string): Promise<Submission[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/submissions`)
+      const response = await fetch(`${this.baseUrl}/submissions?nim=${nim}`)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
