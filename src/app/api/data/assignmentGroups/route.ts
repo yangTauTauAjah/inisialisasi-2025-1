@@ -11,7 +11,8 @@ export async function GET(/* request: NextRequest */) {
     // Fetch all data from the 'assignmentGroups' table
     const { data, error } = await supabase
       .from(AssignmentGroupsTableName)
-      .select("*");
+      .select("*")
+      .order("created_at");
 
     if (error) {
       console.error("Error fetching assignment groups:", error.message);
