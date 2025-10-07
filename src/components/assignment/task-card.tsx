@@ -58,7 +58,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
               )}
             </p>
             {task.description && (
-              <p className="text-gray-600 text-sm mt-2 line-clamp-2">{task.description}</p>
+              <p className="text-gray-600 text-sm mt-2 line-clamp-2 whitespace-pre-wrap">{task.description}</p>
             )}
           </div>
           {isOverdueTask && (

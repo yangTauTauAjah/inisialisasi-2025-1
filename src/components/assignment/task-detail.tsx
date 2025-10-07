@@ -210,7 +210,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
               {task.description || "Tidak ada deskripsi tugas"}
             </p>
           </div>
