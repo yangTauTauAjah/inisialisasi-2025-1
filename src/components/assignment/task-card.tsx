@@ -12,6 +12,22 @@ interface TaskCardProps {
   onClick: () => void
 }
 
+// Extract alt text from img tags and remove all HTML
+const getPlainTextDescription = (html: string) => {
+  if (!html) return '';
+  
+  // Replace img tags with their alt text
+  let text = html.replace(/<img[^>]+alt=["']([^"']*)["'][^>]*>/gi, '$1');
+  
+  // Remove all other HTML tags
+  text = text.replace(/<[^>]*>/g, '');
+  
+  // Decode HTML entities
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
 export function TaskCard({ task, onClick }: TaskCardProps) {
   const formatDeadline = (dueDate: string) => {
     const date = new Date(dueDate)
@@ -58,7 +74,9 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
               )}
             </p>
             {task.description && (
-              <p className="text-gray-600 text-sm mt-2 line-clamp-2 whitespace-pre-wrap">{task.description}</p>
+              <p className="text-gray-600 text-sm mt-2 line-clamp-2 whitespace-pre-wrap">
+                {getPlainTextDescription(task.description)}
+              </p>
             )}
           </div>
           {isOverdueTask && (

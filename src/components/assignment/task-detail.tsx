@@ -46,7 +46,7 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
     setIsLoadingSubmissions(true);
     try {
       const submissionsData =
-        await assignmentService.fetchSubmissionsByAssignment(task.id);
+        await assignmentService.fetchSubmissionsByAssignment(task.id, state.nim);
       setSubmissions(submissionsData);
     } catch (err) {
       console.error("Error fetching submissions:", err);
@@ -210,9 +210,12 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {task.description || "Tidak ada deskripsi tugas"}
-            </p>
+            <div 
+              className="text-gray-700 leading-relaxed whitespace-pre-wrap prose prose-img:max-w-full prose-img:h-auto"
+              dangerouslySetInnerHTML={{ 
+                __html: task.description || "Tidak ada deskripsi tugas" 
+              }}
+            />
           </div>
 
           <div className="border-t pt-6">
