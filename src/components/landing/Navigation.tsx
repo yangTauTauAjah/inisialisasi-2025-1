@@ -10,7 +10,7 @@ const Navigation = () => {
   const navItems = [
     { name: 'HOME', href: '/' },
     { name: 'TATA TERTIB', href: '/#guidelines' },
-    { name: 'BERITA & PENGUMUMAN', href: '/announcement' },
+    // { name: 'BERITA & PENGUMUMAN', href: '/announcement' },
     { name: 'PENUGASAN', href: '/assignment' }
   ];
 
