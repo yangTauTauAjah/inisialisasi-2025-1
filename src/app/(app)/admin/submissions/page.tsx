@@ -1,64 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Typography, Table, Spin, Tag, Tooltip } from "antd";
+import { Typography, Table, Spin, Tag, Tooltip, Input, Space, Button } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { createClient } from "@/lib/supabase/client";
 import {
-  AssignmentsTableName,
-  StudentsTableName,
   SubmissionsTableName,
 } from "@/lib/supabase/tableAlias";
 import { Submission } from "@/lib/mockData";
 import { useRouter } from "next/navigation";
+import type { FilterDropdownProps, ColumnType } from "antd/es/table/interface";
 
 const { Title } = Typography;
 
-// Component to handle async data fetching for a single cell
-const AsyncDataCell: React.FC<{
-  asyncFunction: (...params: number[]) => Promise<string>;
-  args: number[];
-}> = ({ asyncFunction, args }) => {
-  const [data, setData] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isMounted = true; // To prevent state updates on unmounted component
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await asyncFunction(...args);
-        if (isMounted) {
-          setData(result);
-        }
-      } catch (err: unknown) {
-        if (isMounted) {
-          setError(`Error: ${err}`);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false; // Cleanup for unmounting
-    };
-  }, [args, asyncFunction]); // Re-run effect if NIM changes
-
-  if (loading) {
-    return <Spin size="small" />;
-  }
-
-  if (error) {
-    return <span style={{ color: "red" }}>{error}</span>;
-  }
-
-  return <span>{data}</span>;
-};
 
 const SubmissionsData = () => {
   const [loading, setLoading] = useState(true);
@@ -67,39 +20,12 @@ const SubmissionsData = () => {
   >([]);
   const router = useRouter();
 
-  const getAssignmentName = async (assignmentId: number) => {
-    const assignmentName = await createClient()
-      .from(AssignmentsTableName)
-      .select<"name", { name: string }>("name")
-      .eq("id", assignmentId)
-      .then((res) => {
-        console.log(assignmentId, res.data);
-        if (res.data && res.data?.length > 0) {
-          return res.data[0].name;
-        }
-      });
-    return assignmentName ? assignmentName : "Unassigned";
-  };
-
-  const getStudentName = async (studentId: number) => {
-    const assignmentName = await createClient()
-      .from(StudentsTableName)
-      .select<"nama", { nama: string }>("nama")
-      .eq("id", studentId)
-      .then((res) => {
-        if (res.data && res.data?.length > 0) {
-          return res.data[0].nama;
-        }
-      });
-    return assignmentName ? assignmentName : "Not found";
-  };
-
   useEffect(() => {
     setLoading(true);
     const supabase = createClient();
     supabase
       .from(SubmissionsTableName)
-      .select<"*", Submission>("*")
+      .select<"*, sub_task_id(id, name, is_link), user_id(nama, nim, kelompok)", Submission & { sub_task_id: { id: number, name: string, is_link: boolean }, user_id: { nama: string, nim: string, kelompok: string } }>("*, sub_task_id(id, name, is_link), user_id(nama, nim, kelompok)")
       .then(async (res) => {
         if (!res.data || res.data.length === 0) {
           setSubmissions([]);
@@ -109,18 +35,13 @@ const SubmissionsData = () => {
 
         const _ = await Promise.all(
           res.data.map(async (e) => {
-            const { data: assigntment } = await supabase
-              .from(AssignmentsTableName)
-              .select<"is_link", { is_link: boolean }>("is_link")
-              .eq("id", e.sub_task_id);
-
             return {
               ...e,
-              type: assigntment
-                ? assigntment?.length > 0 && assigntment[0].is_link === true
-                  ? "link"
-                  : "file"
-                : "",
+              assignment: e.sub_task_id.name,
+              student: e.user_id.nama,
+              nim: e.user_id.nim,
+              group: e.user_id.kelompok,
+              type: e.sub_task_id.is_link === true ? "link" : "file"
             };
           })
         );
@@ -131,34 +52,88 @@ const SubmissionsData = () => {
       });
   }, [setSubmissions]);
 
-  const columns: (Record<string, string | ((...args: never[]) => unknown)> & {
-    dataIndex: keyof Submission | "type";
-  })[] = [
+  // Search filter component
+  /* const getColumnSearchProps = (dataIndex: string, placeholder: string) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: FilterDropdownProps) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search ${placeholder}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => confirm()}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => clearFilters && clearFilters()} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value: string | number | boolean, record: Submission & { type: string }) => {
+      const recordValue = record[dataIndex as keyof (Submission & { type: string })];
+      return recordValue
+        ? recordValue.toString().toLowerCase().includes(value.toString().toLowerCase())
+        : false;
+    },
+  }); */
+
+  const columns: ColumnType<Submission & { assignment: string, student: string, nim: string, group: string, type: string }>[] = [
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      sorter: (a, b) => a.id - b.id,
+      sortDirections: ['ascend', 'descend'],
+      width: 80,
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend'],
+      // ...getColumnSearchProps('name', 'name'),
     },
     {
       title: "Assignment",
-      dataIndex: "sub_task_id",
-      key: "sub_task_id",
-      render: (id: number) => (
-        <AsyncDataCell asyncFunction={getAssignmentName} args={[id]} />
-      ),
+      dataIndex: "assignment",
+      key: "assignment",
+      sorter: (a, b) => a.assignment.localeCompare(b.assignment),
+      sortDirections: ['ascend', 'descend'],
     },
     {
       title: "Student",
-      dataIndex: "user_id",
-      key: "user_id",
-      render: (id: number) => (
-        <AsyncDataCell asyncFunction={getStudentName} args={[id]} />
-      ),
+      dataIndex: "student",
+      key: "student",
+      sorter: (a, b) => a.student.localeCompare(b.student),
+      sortDirections: ['ascend', 'descend'],
+    },
+    {
+      title: "NIM",
+      dataIndex: "nim",
+      key: "nim",
+      sorter: (a, b) => a.nim.localeCompare(b.nim),
+      sortDirections: ['ascend', 'descend'],
+    },
+    {
+      title: "Group",
+      dataIndex: "group",
+      key: "group",
+      sorter: (a, b) => a.group.localeCompare(b.group),
+      sortDirections: ['ascend', 'descend'],
     },
     {
       title: "Type",
@@ -167,6 +142,12 @@ const SubmissionsData = () => {
       render: (text: string) => (
         <Tag color={text ? "geekblue" : "purple"}>{text.toUpperCase()}</Tag>
       ),
+      filters: [
+        { text: 'Link', value: 'link' },
+        { text: 'File', value: 'file' },
+      ],
+      onFilter: (value, record) => record.type === value,
+      width: 100,
     },
     {
       title: "Content",
@@ -209,7 +190,13 @@ const SubmissionsData = () => {
       dataIndex: "created_at",
       key: "created_at",
       render: (date) =>
-        new Date(date).toLocaleDateString("en", { dateStyle: "full" }),
+        new Date(date).toLocaleString("en", { 
+          dateStyle: "full",
+          timeStyle: "short"
+        }),
+      sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      sortDirections: ['ascend', 'descend'],
+      defaultSortOrder: 'descend',
     },
   ];
 
