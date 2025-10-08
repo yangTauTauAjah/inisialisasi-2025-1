@@ -102,8 +102,13 @@ const AssignmentsData = () => {
       title: "Due Date",
       dataIndex: "due",
       key: "due",
-      render: (text) =>
-        new Date(text).toLocaleString("en", { dateStyle: "full" }),
+      render: (text) => {
+        console.log(text)
+        return new Date(text).toLocaleString("en", { 
+          dateStyle: "full",
+          timeStyle: "short"
+        })
+      },
     },
     {
       title: "Action",
@@ -526,7 +531,7 @@ const AssignmentsData = () => {
             </Select>
           </Form.Item>
           <Form.Item name="due" label="Due Date">
-            <DatePicker value={new Date()} className="w-full" />
+            <DatePicker showTime={{showSecond: false}} value={new Date()} className="w-full" />
           </Form.Item>
           <Form.Item
             name="is_link"
