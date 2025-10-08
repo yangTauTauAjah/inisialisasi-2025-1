@@ -16,7 +16,7 @@ const { Title } = Typography;
 const SubmissionsData = () => {
   const [loading, setLoading] = useState(true);
   const [submissions, setSubmissions] = useState<
-    (Submission & { type: string })[]
+    (Submission & { assignment: string, student: string, nim: string, group: string, type: string })[]
   >([]);
   const router = useRouter();
 
