@@ -69,7 +69,7 @@ export function MobileMenuDropdown({
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             TATA TERTIB
           </button>
-          <button
+          {/* <button
             onClick={() => {
               handleNavigation("/announcement");
               onClose();
@@ -78,7 +78,7 @@ export function MobileMenuDropdown({
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             BERITA & PENGUMUMAN
-          </button>
+          </button> */}
           <button
             onClick={() => {
               handleNavigation("/penugasan");

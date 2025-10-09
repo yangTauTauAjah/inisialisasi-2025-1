@@ -46,12 +46,12 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
           >
             TATA TERTIB
           </button>
-          <button 
+          {/* <button 
             onClick={() => handleNavigation("/announcement")} 
             className="hover:text-blue-200 transition-colors"
           >
             BERITA & PENGUMUMAN
-          </button>
+          </button> */}
           <button 
             onClick={() => handleNavigation("/penugasan")} 
             className="hover:text-blue-200 transition-colors"
