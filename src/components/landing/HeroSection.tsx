@@ -50,7 +50,7 @@ const HeroSection = () => {
         <img
           src="/main-logo-hero.png"
           alt="Inisialisasi Logo"
-          className="absolute bottom-[-200px] md:bottom-[-250px] left-1/2 transform -translate-x-1/2 w-sm md:w-md pointer-events-none select-none z-20"
+          className="absolute bottom-[-200px] md:bottom-[-250px] left-1/2 transform -translate-x-1/2 w-xs md:w-md pointer-events-none select-none z-20"
           draggable={false}
         />
       </div>
