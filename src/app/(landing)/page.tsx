@@ -13,7 +13,7 @@ const LandingPage = () => {
       <HeroSection />
       <AboutSection />
       <GuidelinesSection />
-      {/* <OutfitSection /> */}
+      <OutfitSection />
       <CriteriaSection />
     </>
   );

@@ -4,17 +4,13 @@ import React, { useRef, useState } from 'react';
 
 const outfitSlides = [
   {
-    alt: 'Outfit Male 1',
-    src: '/outfit-male.png',
+    alt: 'Outfit Boy',
+    src: '/outfit-boy.png',
   },
   {
-    alt: 'Outfit Male 2',
-    src: '/outfit-male.png',
-  },
-  {
-    alt: 'Outfit Male 3',
-    src: '/outfit-male.png',
-  },
+    alt: 'Outfit Girl',
+    src: '/outfit-girl.png',
+  }
 ];
 
 const OutfitSection = () => {
