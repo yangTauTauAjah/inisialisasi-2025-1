@@ -22,6 +22,17 @@ const CriteriaSection = () => {
           </h2>
         </div>
 
+        {/* Reward Image */}
+        <div className="flex justify-center items-center mb-12">
+          <img
+            src="/reward.png"
+            alt="Reward Frame"
+            className="w-full max-w-5xl h-auto object-contain"
+            draggable={false}
+            aria-hidden="true"
+          />
+        </div>
+
         {/* Main Content - Two Column Layout with Images */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left Column - Penalty Left Image */}
@@ -45,12 +56,23 @@ const CriteriaSection = () => {
         </div>
 
         {/* Bottom Section - Graduation Requirements */}
-        <div className="flex justify-center items-center my-12">
+        <div className="flex justify-center items-center mb-12">
           <img
             src="/pass-requirement.png"
             alt="Syarat Kelulusan"
             className="w-full max-w-5xl h-auto object-contain"
             draggable={false}
+          />
+        </div>
+        
+        {/* Punishment Image */}
+        <div className="flex justify-center items-center my-12">
+          <img
+            src="/punishment.png"
+            alt="Punishment Frame"
+            className="w-full max-w-5xl h-auto object-contain"
+            draggable={false}
+            aria-hidden="true"
           />
         </div>
       </div>
