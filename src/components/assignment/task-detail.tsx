@@ -201,7 +201,9 @@ export function TaskDetail({ task, onBack }: TaskDetailProps) {
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between">
             <h1 className="text-3xl font-bold text-blue-600">{task.name}</h1>
-            {isOverdueTask && (
+            {submissions.length > 0 ? <div className="bg-green-100 text-green-500 px-3 py-1 rounded-full text-sm font-semibold">
+                SUBMITTED
+              </div> : isOverdueTask && (
               <div className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
                 TERLAMBAT
               </div>
