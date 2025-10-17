@@ -34,7 +34,7 @@ export function LoginForm({ onSwitchToActivation }: LoginFormProps) {
       await login(nim, password)
       messageApi.open({ key, type: 'success', content: 'Login successful! Redirecting...', duration: 2 })
       setTimeout(() => {
-        router.push("/assignment")
+        router.push("/")
       }, 1200)
       
     } catch (error) {
