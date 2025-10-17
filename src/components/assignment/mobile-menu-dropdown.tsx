@@ -69,16 +69,16 @@ export function MobileMenuDropdown({
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             TATA TERTIB
           </button>
-          {/* <button
+          <button
             onClick={() => {
-              handleNavigation("/announcement");
+              handleNavigation("/#criteria");
               onClose();
             }}
             className="flex items-center px-5 py-3.5 hover:bg-white/5 hover:backdrop-blur-sm transition-all duration-300 text-sm font-medium text-white/90 hover:text-white group w-full text-left"
           >
             <div className="w-1 h-1 bg-blue-300 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            BERITA & PENGUMUMAN
-          </button> */}
+            REWARD & PUNISHMENT
+          </button>
           <button
             onClick={() => {
               handleNavigation("/penugasan");
