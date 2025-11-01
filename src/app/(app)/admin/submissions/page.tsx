@@ -101,6 +101,7 @@ const SubmissionsData = () => {
       key: "id",
       sorter: (a, b) => a.id - b.id,
       sortDirections: ['ascend', 'descend'],
+      width: '5%',
     },
     {
       title: "Name",
@@ -109,6 +110,7 @@ const SubmissionsData = () => {
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend'],
       ...getColumnSearchProps('name', 'name'),
+      width: '25%',
     },
     {
       title: "Assignment",
@@ -118,6 +120,17 @@ const SubmissionsData = () => {
       sortDirections: ['ascend', 'descend'],
       filters: assignmentNames.map((name) => ({ text: name, value: name })),
       onFilter: (value, record) => record.assignment === value,
+      width: '10%',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (value) => {
+        return (
+          <Tooltip placement="topLeft" title={value}>
+            {value}
+          </Tooltip>
+        )
+      },
     },
     {
       title: "Student",
@@ -125,6 +138,7 @@ const SubmissionsData = () => {
       key: "student",
       sorter: (a, b) => a.student.localeCompare(b.student),
       sortDirections: ['ascend', 'descend'],
+      width: '15%',
     },
     {
       title: "NIM",
@@ -132,6 +146,7 @@ const SubmissionsData = () => {
       key: "nim",
       sorter: (a, b) => a.nim.localeCompare(b.nim),
       sortDirections: ['ascend', 'descend'],
+      width: '10%',
     },
     {
       title: "Group",
@@ -141,6 +156,7 @@ const SubmissionsData = () => {
       sortDirections: ['ascend', 'descend'],
       filters: groups.map((g) => (g === "" ? {text: "No group", value: g} : { text: g, value: g })),
       onFilter: (value, record) => record.group === value,
+      width: '10%',
     },
     {
       title: "Type",
@@ -154,7 +170,7 @@ const SubmissionsData = () => {
         { text: 'File', value: 'file' },
       ],
       onFilter: (value, record) => record.type === value,
-      width: 100,
+      width: '5%',
     },
     {
       title: "Content",
@@ -192,19 +208,30 @@ const SubmissionsData = () => {
             Download File
           </a>
         ),
+      width: '10%',
     },
     {
       title: "Submitted At",
       dataIndex: "created_at",
       key: "created_at",
-      render: (date) =>
-        new Date(date).toLocaleString("en", { 
-          dateStyle: "full",
-          timeStyle: "short"
-        }),
       sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
       sortDirections: ['ascend', 'descend'],
       defaultSortOrder: 'descend',
+      width: '10%',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (date) => {
+        const value = new Date(date).toLocaleString("en", { 
+            dateStyle: "full",
+            timeStyle: "short"
+          })
+        return (
+          <Tooltip placement="topLeft" title={value}>
+            {value}
+          </Tooltip>
+        )
+      },
     },
   ];
 
@@ -214,7 +241,9 @@ const SubmissionsData = () => {
         View Submissions
       </Title>
       <Table
+        size="small"
         bordered
+        tableLayout="fixed"
         loading={loading}
         scroll={{ x: 800 }}
         dataSource={submissions}
