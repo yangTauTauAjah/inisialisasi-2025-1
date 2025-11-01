@@ -18,6 +18,8 @@ const SubmissionsData = () => {
   const [submissions, setSubmissions] = useState<
     (Submission & { assignment: string, student: string, nim: string, group: string, type: string })[]
   >([]);
+  const [groups, setGroups] = useState<string[]>([]);
+  const [assignmentNames, setAssignmentNames] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,13 +49,15 @@ const SubmissionsData = () => {
         );
 
         setSubmissions(_);
+        setGroups(Array.from(new Set(_.map((e) => e.user_id.kelompok))));
+        setAssignmentNames(Array.from(new Set(_.map((e) => e.sub_task_id.name))));
 
         setLoading(false);
       });
   }, [setSubmissions]);
 
   // Search filter component
-  /* const getColumnSearchProps = (dataIndex: string, placeholder: string) => ({
+  const getColumnSearchProps = (dataIndex: string, placeholder: string) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: FilterDropdownProps) => (
       <div style={{ padding: 8 }}>
         <Input
@@ -82,13 +86,13 @@ const SubmissionsData = () => {
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
-    onFilter: (value: string | number | boolean, record: Submission & { type: string }) => {
+    onFilter: (value: string | number | boolean | bigint, record: Submission & { type: string }) => {
       const recordValue = record[dataIndex as keyof (Submission & { type: string })];
       return recordValue
         ? recordValue.toString().toLowerCase().includes(value.toString().toLowerCase())
         : false;
     },
-  }); */
+  });
 
   const columns: ColumnType<Submission & { assignment: string, student: string, nim: string, group: string, type: string }>[] = [
     {
@@ -97,7 +101,6 @@ const SubmissionsData = () => {
       key: "id",
       sorter: (a, b) => a.id - b.id,
       sortDirections: ['ascend', 'descend'],
-      width: 80,
     },
     {
       title: "Name",
@@ -105,7 +108,7 @@ const SubmissionsData = () => {
       key: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend'],
-      // ...getColumnSearchProps('name', 'name'),
+      ...getColumnSearchProps('name', 'name'),
     },
     {
       title: "Assignment",
@@ -113,6 +116,8 @@ const SubmissionsData = () => {
       key: "assignment",
       sorter: (a, b) => a.assignment.localeCompare(b.assignment),
       sortDirections: ['ascend', 'descend'],
+      filters: assignmentNames.map((name) => ({ text: name, value: name })),
+      onFilter: (value, record) => record.assignment === value,
     },
     {
       title: "Student",
@@ -134,6 +139,8 @@ const SubmissionsData = () => {
       key: "group",
       sorter: (a, b) => a.group.localeCompare(b.group),
       sortDirections: ['ascend', 'descend'],
+      filters: groups.map((g) => (g === "" ? {text: "No group", value: g} : { text: g, value: g })),
+      onFilter: (value, record) => record.group === value,
     },
     {
       title: "Type",
