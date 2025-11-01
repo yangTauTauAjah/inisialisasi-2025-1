@@ -23,10 +23,13 @@ export default function AssignmentPage() {
       try {
         setLoading(true)
         setError("")
+
+        const sortedAssignmentData = (await assignmentService.fetchAssignments())
+          .sort((a,b) => new Date(a.due).getTime() - new Date(b.due).getTime())
         
         const [assignmentGroups, assignments] = await Promise.all([
           assignmentService.fetchAssignmentGroups(),
-          assignmentService.fetchAssignments()
+          sortedAssignmentData
         ])
         
         const transformedData = assignmentService.transformToDayData(assignmentGroups, assignments)
