@@ -20,6 +20,7 @@ const SubmissionsData = () => {
   >([]);
   const [groups, setGroups] = useState<string[]>([]);
   const [assignmentNames, setAssignmentNames] = useState<string[]>([]);
+  const [pageSize, setPageSize] = useState(20);
   const router = useRouter();
 
   useEffect(() => {
@@ -109,7 +110,7 @@ const SubmissionsData = () => {
       key: "name",
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend'],
-      ...getColumnSearchProps('name', 'name'),
+      ...getColumnSearchProps('name', 'student\'s name'),
       width: '25%',
     },
     {
@@ -147,6 +148,7 @@ const SubmissionsData = () => {
       sorter: (a, b) => a.nim.localeCompare(b.nim),
       sortDirections: ['ascend', 'descend'],
       width: '10%',
+      ...getColumnSearchProps('nim', 'NIM'),
     },
     {
       title: "Group",
@@ -247,10 +249,15 @@ const SubmissionsData = () => {
         loading={loading}
         scroll={{ x: 800 }}
         dataSource={submissions}
-        columns={columns}
-        rowKey="id"
+        columns={columns}        rowKey="id"
         className="rounded-lg overflow-hidden"
-        pagination={{ pageSize: 20 }}
+        pagination={{ 
+          pageSize: pageSize,
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '20', '50', '100'],
+          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} submissions`,
+          onShowSizeChange: (current, size) => setPageSize(size)
+        }}
         style={{ backgroundColor: "var(--ant-color-bg-container)" }}
       />
     </div>
